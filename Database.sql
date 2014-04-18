@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `ph_bans` (
   `steam` varchar(30) NOT NULL,
   `name` text NOT NULL,
   `admin` varchar(50) NOT NULL,
+  `reason` varchar(255) NOT NULL,
   `bantime` datetime NOT NULL,
   `expire` datetime NOT NULL,
   PRIMARY KEY (`id`),

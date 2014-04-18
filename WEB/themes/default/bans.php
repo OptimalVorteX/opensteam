@@ -3,9 +3,10 @@
   <thead>
     <tr>
       <th><?=$lang["Player"]?></th>
-	  <th><?=$lang["SteamID"]?></th>
-      <th><?=$lang["Banned_By"]?></th>
 	  <th><?=$lang["Expire"]?></th>
+	  <th><?=$lang["Reason"]?></th>
+      <th><?=$lang["Banned_By"]?></th>
+
     </tr>
   </thead>
   <tbody>
@@ -14,12 +15,17 @@
   foreach ( $BansData as $Player ) {
   ?>
     <tr>
-      <td width="180"><a class="text-danger" target="_blank" href="http://steamcommunity.com/profiles/<?=ConvertToSteam64($Player["steam"])?>/"><?=$Player["name"]?></a>
+      <td width="260">
+	  
+		<a class="text-danger" href="<?=OSS_HOME?>?option=player&amp;id=<?=($Player["steam"])?>">
+		   <?=$Player["name"]?>
+		</a>
+	  
 	  <?=OSS_EditUser($Player["steam"]) ?>
 	  </td>
-      <td width="200"><?=($Player["steam"])?></td>
-      <td width="180"><?=$Player["admin"]?></td>
-	  <td><?=OB_ExpireDateRemain($Player["expire_date"])?></td>
+	  <td width="190"><?=OB_ExpireDateRemain($Player["expire_date"])?></td>
+	  <td width="200"><?=$Player["reason"]?></a></td>
+	  <td><?=$Player["admin"]?></td>
     </tr>
    <?php } ?>
   </tbody>

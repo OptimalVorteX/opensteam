@@ -32,7 +32,7 @@
 	   if($_GET["sort"] == "admin")     $orderby  = " LOWER(admin) ASC";
 	 }
 	 
-	 $sth = $db->prepare("SELECT b.id, b.steam, b.name, b.admin, b.bantime, b.expire 
+	 $sth = $db->prepare("SELECT b.id, b.steam, b.name, b.admin, b.bantime, b.expire, b.reason
 	 FROM ".OSSDB_BANS." as b 
 	 WHERE b.id>=1 $sql 
 	 ORDER BY $orderby 
@@ -49,13 +49,14 @@
 	 $BansData[$c]["steam"]    = ($row["steam"]);
 	 $BansData[$c]["name"]     = ($row["name"]);
 	 $BansData[$c]["admin"]    = ($row["admin"]);
+	 $BansData[$c]["reason"]   = ($row["reason"]);
 	 $BansData[$c]["bantime"]  = date(OSS_DATE_FORMAT, strtotime($row["bantime"]) );
 	 $BansData[$c]["expire"]   = date(OSS_DATE_FORMAT, strtotime($row["expire"]) );
 	 $BansData[$c]["expire_date"]   = ( $row["expire"] ) ;
-	 
 	 
 	 $BansData[$c]["num"]  = ($c+1);
 	  
 	 $c++;
 	 }
+	 
 ?>

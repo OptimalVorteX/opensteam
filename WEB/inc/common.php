@@ -233,12 +233,12 @@ function OSS_EditUser( $userID ) {
    if(OSS_SuperAdmin() AND is_numeric($userID) ) {
    global $lang;
    ?>
-   <a class="edit_user_link" href="<?=OSS_HOME?>?option=edit_user&id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
+   <a class="btn btn-info btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
    <?php
    } else if(OSS_SuperAdmin() AND !is_numeric($userID) ) {
    global $lang;
    ?>
-   <a class="edit_user_link" href="<?=OSS_HOME?>?option=edit_user&id=<?=$userID?>"><?=$lang["Edit"]?></a>
+   <a class="btn btn-info btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&id=<?=$userID?>"><?=$lang["Edit"]?></a>
    <?php
    }
 }
@@ -246,7 +246,7 @@ function OSS_EditUser( $userID ) {
 function OSS_SteamAvatar( $link = "", $w="64", $h="64" ) {
    if(!empty($link) ) {
    
-    ?><img src="<?=$link?>" alt="avatar" width="<?=$w?>" height="<?=$h?>" /><?php
+    ?><img src="<?=$link?>" alt="avatar" width="<?=$w?>" height="<?=$h?>" class="SteamAvatar" /><?php
    
    }
 }

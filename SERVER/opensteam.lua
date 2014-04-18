@@ -101,7 +101,7 @@ hook.Add("ULibCommandCalled", "BanRemoveUserFromDatabase", function(player, cmd,
 	end
 end)
 
-function ulx.banuser( calling_ply, id, banTime )
+function ulx.banuser( calling_ply, id, banTime, banReason )
 	id = id:upper()
 	player_name = id
 	
@@ -119,7 +119,9 @@ function ulx.banuser( calling_ply, id, banTime )
 		InfoDate = tostring( os.date("%Y-%m-%d %H:%M:%S") )
 		
 		Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
-
+        
+		banReason = tostring(banReason)
+		
 		if banTime<=0 && ALLOW_PERM_BANS == 1 then
 		  Expire = tostring( '0000-00-00 00:00:00' )
 		end
@@ -129,7 +131,7 @@ function ulx.banuser( calling_ply, id, banTime )
 		  Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
 		end
 
-		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `bantime`, `expire`) VALUES ('"..id.."', '"..player_name.."', '"..calling_ply:GetName().."', '"..InfoDate.."', '"..Expire.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..calling_ply:GetName().."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."' ")
+		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`) VALUES ('"..id.."', '"..player_name.."', '"..calling_ply:GetName().."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..calling_ply:GetName().."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."' ")
 		
 		InsertQ.onError = function(Q,E) print("'banuser' threw an error:") print(E) end
 		InsertQ:start()
@@ -212,6 +214,7 @@ end
 local banuser = ulx.command( "User Management", "ulx banuser", ulx.banuser )
 banuser:addParam{ type=ULib.cmds.StringArg, hint="SteamID" }
 banuser:addParam{ type=ULib.cmds.NumArg, hint="Ban time (in minutes) (optional)", ULib.cmds.optional }
+banuser:addParam{ type=ULib.cmds.StringArg, hint="Ban Reason (optional)", ULib.cmds.optional }
 banuser:defaultAccess( ULib.ACCESS_SUPERADMIN )
 banuser:help( "Command to ban users and store data in MySQL database." )
 

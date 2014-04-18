@@ -27,4 +27,17 @@
  $lang["Expired"]        = "Expired";
  $lang["Remain"]         = "remain";
  $lang["Permanent"]      = "Permanent";
+ 
+ $lang["Steam"]         = "Steam";
+ $lang["CommunityID"]   = "CommunityID";
+ $lang["Connections"]   = "Connections";
+ $lang["Rank"]          = "Rank";
+ $lang["BanPlayer"]     = "Ban Player";
+ $lang["BanReason"]     = "Ban Reason";
+ $lang["Reason"]        = "Reason";
+ $lang["Submit"]        = "Submit";
+ 
+ $lang["clear"]         = "clear";
+ $lang["perm"]          = "perm";
+ 
 ?>

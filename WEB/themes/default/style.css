@@ -5805,5 +5805,6 @@ footer a { color: #D3D3D3; }
 }
 .active { font-weight: bold; }
 /*# sourceMappingURL=bootstrap.css.map */
-
+.SteamAvatar { vertical-align: top; }
+.floatR { float:right; }
 .edit_user_link { font-size: 11px; float: right; }

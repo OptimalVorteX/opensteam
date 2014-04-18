@@ -25,10 +25,11 @@
 	die();
 	}
 	
-	//Change user
+	//EDIT user
 	if ( isset($_POST["change_user"]) ) {
 	
 	   $rank = trim($_POST["rank"]);
+	   $reason = trim( strip_tags( $_POST["reason"] ) ); 
 	   $sth = $db->prepare( "UPDATE ".OSSDB_PLAYERS." SET rank=:rank WHERE id=:id LIMIT 1" );
 	   $sth->bindValue(':rank', $rank, PDO::PARAM_STR); 
 	   $sth->bindValue(':id',   $pid, PDO::PARAM_INT); 
@@ -44,7 +45,7 @@
 		  if( isset($check[0]) AND strlen($check[0]) == 4 )  $checked++;    
 		  if( isset($check[1]) AND strlen($check[1]) == 2 )  $checked++;
 		  if( isset($check[2]) AND strstr($check[2], " ") AND strstr($check[2], ":") ) $checked++;
-		  
+		   //die("$checked $reason ". $check[0]);
 		  if($checked>=4) {
 		  
 		  $sth = $db->prepare( "SELECT * FROM ".OSSDB_PLAYERS." WHERE id=:id LIMIT 1" );
@@ -55,10 +56,10 @@
 		  
 		  $datetime = date("Y-m-d H:i:s");
 		  $admin = trim($_SESSION["name"]);
-		  
-		  $ins = $db->prepare( "INSERT INTO ".OSSDB_BANS."(steam, name, admin, bantime, expire) 
-		  VALUES('".$row["steam"]."', '".$row["playerName"]."', '".$admin."', '".$datetime."', '".$expire."' ) ON DUPLICATE KEY UPDATE expire = '".$expire."', admin='".$admin."', name = '".$row["playerName"]."' " );
-		  
+		 
+		  $ins = $db->prepare( "INSERT INTO ".OSSDB_BANS."(steam, name, admin, reason, bantime, expire) 
+		  VALUES('".$row["steam"]."', '".$row["playerName"]."', '".$admin."', '".$reason ."', '".$datetime."', '".$expire."' ) ON DUPLICATE KEY UPDATE expire = '".$expire."', admin='".$admin."', `reason`='".$reason."', name = '".$row["playerName"]."' " );
+		   
 		  $result = $ins->execute();
 		  }
 		  
@@ -93,11 +94,15 @@
 	$sth->bindValue(':steam', $EditPlayer["steam"], PDO::PARAM_STR); 
 	$result = $sth->execute();
 	
+	$EditPlayer["reason"] = "";
+	$EditPlayer["expire_date"] = "";
+	
 	$row = $sth->fetch(PDO::FETCH_ASSOC);
 	
 	if(!empty($row["name"])) {
 	
 	  $EditPlayer["banid"]   = $row["id"];
+	  $EditPlayer["reason"]   = $row["reason"];
 	  $EditPlayer["admin"]   = $row["admin"];
 	  $EditPlayer["bantime"] = date( OSS_DATE_FORMAT, strtotime($row["bantime"]));
 	  $EditPlayer["expire"]  = date( OSS_DATE_FORMAT, strtotime($row["expire"] ));
