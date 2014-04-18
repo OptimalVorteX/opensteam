@@ -1,0 +1,1 @@
+Copy file opensteam.lua in GAMEROOT/garrysmod/addons/ulx/lua/ulx/modules/sh/
