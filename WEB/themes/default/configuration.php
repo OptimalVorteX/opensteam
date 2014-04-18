@@ -52,7 +52,7 @@
          <tr>
             <td width="180"><strong>Loading URL:</strong></td>
             <td>
-               <input type="text" value="sv_loadingurl <?=OSS_HOME?>loading/?mapname=%m&steamid=%s" size="87" />
+               <input type="text" value='sv_loadingurl "<?=OSS_HOME?>loading/?mapname=%m&steamid=%s"' size="87" />
                <div class="alert alert-dismissable alert-success">
                   <button type="button" class="close" data-dismiss="alert">×</button>
                   Open file <strong>server.cfg</strong> that is located in the following directory 
@@ -60,7 +60,7 @@
                      <div>GAME_ROOT/garrysmod/cfg
                   </strong>
                   and add the following</div>
-                  <div>sv_loadingurl <?=OSS_HOME?>loading/?mapname=%m&steamid=%s</div>
+                  <div>sv_loadingurl "<?=OSS_HOME?>loading/?mapname=%m&steamid=%s"</div>
                </div>
             </td>
          </tr>

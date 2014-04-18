@@ -42,7 +42,7 @@
 
   $image = $images[array_rand($images)];
   
-  if(!file_exists( $image) ) $image = 'bcg/bcg01.jpg';
+  if(!file_exists( $image) ) $image = 'bcg/image_01.jpg';
   
   $File = "steams/".$steamid.".php";
   $CacheTime = $cfg["cache_steam_files"];
