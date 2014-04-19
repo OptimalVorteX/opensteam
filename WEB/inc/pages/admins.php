@@ -1,5 +1,9 @@
 <?php
 
+     if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; }
+     
+	 $PageTitle = $lang["Admins"].' | OpenSteam';
+	 
      $sql = " AND (p.playerName != '') AND (p.rank = 'superadmin' OR p.rank = 'admin' )";
 	 $orderby  = " id DESC";
 	

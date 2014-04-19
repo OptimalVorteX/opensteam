@@ -1,6 +1,8 @@
 <?php
+
+    if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; }
     
-	$PageTitle = 'Bans | OpenBans';
+	$PageTitle = $lang["Bans"].' | OpenSteam';
 	
     $sql = "";
 	

@@ -7,6 +7,9 @@
  $lang["Player"]      = "Player";
  $lang["Players"]     = "Players";
  $lang["Bans"]        = "Bans";
+ $lang["UserGroups"]  = "User Groups";
+ $lang["Group"]       = "Group";
+ $lang["ManageGroups"]  = "Manage Groups";
  $lang["Admins"]      = "Admins";
  $lang["Location"]    = "Location";
  $lang["Last_Seen"]   = "Last seen";

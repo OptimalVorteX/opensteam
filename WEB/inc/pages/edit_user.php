@@ -110,5 +110,30 @@
 	}
   }
   
+     $sth = $db->prepare("SELECT * FROM ".OSSDB_GROUPS." WHERE `group`!='' $sql 
+	 ORDER BY FIELD(`group`, 'superadmin') ASC, `group` DESC
+	 LIMIT 500");
+	 $result = $sth->execute();
+	 
+	 $GroupsData = array();
+	 $c = 0;
+	 
+	 while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+	 
+	   $GroupsData[$c]["group"]    = $row["group"];
+	   $GroupsData[$c]["commands"] = $row["commands"];
+	   $GroupsData[$c]["commands_short"] = substr($row["commands"], 0, 70);
+	   $GroupsData[$c]["denies"]   = $row["denies"];
+	   $GroupsData[$c]["denies_short"] = substr($row["denies"], 0, 70);
+	   $GroupsData[$c]["root"]    = 0;
+	   $GroupsData[$c]["class"]   = "success";
+	   $GroupsData[$c]["sel"]     = "";
+	   
+	   if(isset($EditPlayer["rank"]) AND $EditPlayer["rank"] == $row["group"])
+	   $GroupsData[$c]["sel"]     = 'selected="selected"';
+	   
+	   $c++;
+	 }
+  
 
 ?>

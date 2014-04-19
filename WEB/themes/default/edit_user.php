@@ -36,12 +36,9 @@
             <label for="select" class="col-lg-2 control-label"><?=$lang["Rank"] ?></label>
             <div class="col-lg-10">
                <select class="form-control" id="select" name="rank" style="width:250px;">
-                  <?php if($EditPlayer["rank"] == "user")       $s='selected="selected"'; else $s=""; ?>
-                  <option <?=$s?> value="user">User</option>
-                  <?php if($EditPlayer["rank"] == "admin")      $s='selected="selected"'; else $s=""; ?>
-                  <option <?=$s?> value="admin">Admin</option>
-                  <?php if($EditPlayer["rank"] == "superadmin") $s='selected="selected"'; else $s=""; ?>
-                  <option <?=$s?> value="superadmin">Super Admin</option>
+			   <?php foreach ($GroupsData as $Group) { ?>
+			     <option <?=$Group["sel"]?> value="<?=$Group["group"]?>"><?=$Group["group"]?></option>
+			   <?php } ?>
                </select>
             </div>
          </div>

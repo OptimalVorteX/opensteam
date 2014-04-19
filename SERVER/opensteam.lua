@@ -12,6 +12,7 @@ local ULX_USERNAME = "root"
 local ULX_PASSWORD = "password"
 local ULX_BANS_TABLE    = "ph_bans"
 local ULX_PLAYERS_TABLE = "ph_users"
+local ULX_GROUPS_TABLE  = "ph_groups"
 local ULXDB
 
 local BAN_TIME = 7200
@@ -59,12 +60,28 @@ local function GetPlayerFromDB(player)
 	player_name = tostring( player:GetName() )
 	id = id:upper()
 	
-	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `steam`='"..player:SteamID().."';")
+	local queryQ = ULXDB:query("SELECT p.`playerName`, p.`rank`, a.`group` as user_group, a.commands as user_commands, a.`denies` as disallowed_commands FROM `"..ULX_PLAYERS_TABLE.."` as p LEFT JOIN `"..ULX_GROUPS_TABLE.."` as a ON a.`group` = p.`rank` WHERE p.`steam`='"..player:SteamID().."';")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
-			Msg("Found "..player:GetName().." ["..tostring(D.rank).."] in the database!\n")
-			--ulx.addusermysql(nil,player:SteamID(),D.rank)
-			ULib.ucl.addUser( id, allows, denies, D.rank )
+			Msg("Found "..tostring(D.playerName).." ["..tostring(D.user_group).."] in the database!\n")
+			
+			str = D.user_commands
+            allowed = {}
+		    c = 0;
+            for v in str:gmatch("[^\r\n]+") do
+              allowed[c] = v
+		      c = c+1
+            end
+			
+			strD = D.disallowed_commands
+            denies = {}
+		    c = 0;
+            for v in strD:gmatch("[^\r\n]+") do
+              denies[c] = v
+		      c = c+1
+            end
+           
+			ULib.ucl.addUser( id, allowed , denies, "user" )
 			load = true
 		end
 	end
