@@ -1,6 +1,6 @@
 <?php if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; } ?>
 <div class="well bs-component">
-   <?php if(!empty($EditPlayer["playerName"])) {?>
+   <?php if(!empty($EditPlayer["playerName"])) { ?>
    <form class="form-horizontal" action="" method="post">
       <fieldset>
          <legend><?=OSS_SteamAvatar($EditPlayer["avatar_medium"])?> <?=$EditPlayer["playerName"]?></legend>

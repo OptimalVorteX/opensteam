@@ -4,6 +4,8 @@
     
 	$pid = trim($_GET["id"]);
     $sql = "";
+	
+	$PageTitle = 'Edit User | OpenSteam';
 
 	if(!is_numeric($pid) AND strstr( $pid, "STEAM_") ) {
 	
@@ -22,7 +24,7 @@
 	$sth = $db->prepare( "DELETE FROM ".OSSDB_BANS." WHERE id=:id LIMIT 1" );
 	$sth->bindValue(':id', $banid, PDO::PARAM_INT); 
 	$result = $sth->execute();
-	header("location: ".OSS_HOME."?option=edit_user&id=".$pid );
+	header("location: ".OSS_HOME."?option=admin_edit_user&id=".$pid );
 	die();
 	}
 	
@@ -66,7 +68,7 @@
 		  
 	   } // END BAN USER
 	   
-	   header("location: ".OSS_HOME."?option=edit_user&id=".$pid );
+	   header("location: ".OSS_HOME."?option=admin_edit_user&id=".$pid );
 	   die();
 	}
   
@@ -100,8 +102,9 @@
 	
 	$row = $sth->fetch(PDO::FETCH_ASSOC);
 	
-	if(!empty($row["name"])) {
+	if(isset( $EditPlayer["playerName"] ) ) $PageTitle = $EditPlayer["playerName"]. ' | OpenSteam';
 	
+	if(!empty($row["name"])) {
 	  $EditPlayer["banid"]   = $row["id"];
 	  $EditPlayer["reason"]   = $row["reason"];
 	  $EditPlayer["admin"]   = $row["admin"];

@@ -233,14 +233,25 @@ function OSS_EditUser( $userID ) {
    if(OSS_SuperAdmin() AND is_numeric($userID) ) {
    global $lang;
    ?>
-   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&amp;id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
+   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=admin_edit_user&amp;id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
    <?php
    } else if(OSS_SuperAdmin() AND !is_numeric($userID) ) {
    global $lang;
    ?>
-   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&amp;id=<?=$userID?>"><?=$lang["Edit"]?></a>
+   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=admin_edit_user&amp;id=<?=$userID?>"><?=$lang["Edit"]?></a>
    <?php
    }
+}
+
+function OSS_EditServer( $serverID ) {
+    
+   if(OSS_SuperAdmin() AND is_numeric($serverID) ) {
+   global $lang;
+   ?>
+   <a class="btn btn-danger btn-xs floatR" href="<?=OSS_HOME?>?option=admin_servers&amp;rcon=<?=(int)$serverID?>">rcon</a> 
+    <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=admin_servers&amp;edit=<?=(int)$serverID?>"><?=$lang["Edit"]?></a>
+   <?php
+   } 
 }
 
 function OSS_DeleteBan( $userID ) {

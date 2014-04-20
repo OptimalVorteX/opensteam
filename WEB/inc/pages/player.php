@@ -53,6 +53,7 @@
 	$PlayerInfo["steam"] = $row["steam"];
 	$PlayerInfo["location"] = $row["location"];
 	$PlayerInfo["playerName"] = $row["playerName"];
+	$PageTitle = $row["playerName"].' | OpenSteam';
 	$PlayerInfo["avatar"] = $row["avatar"];
 	$PlayerInfo["avatar_medium"] = $row["avatar_medium"];
 	$PlayerInfo["last_connection"] = date( OSS_DATE_FORMAT, strtotime($row["last_connection"]) );

@@ -21,12 +21,12 @@
 	   $result = $upd->execute();
 	 }
 	 
-	 header("location: ".OSS_HOME."?option=groups");
+	 header("location: ".OSS_HOME."?option=admin_groups");
 	 die();
   }
   
   if(isset($_GET["remove"]) AND !empty($_GET["remove"]) AND $_GET["remove"]=="superadmin") {
-  	 header("location: ".OSS_HOME."?option=groups");
+  	 header("location: ".OSS_HOME."?option=admin_groups");
 	 die();
   }
 
@@ -41,7 +41,7 @@
 	   $result = $sth->execute();
 
 	   if ( $sth->rowCount()>=1 OR empty($NewName) ) {
-	      header("location: ".OSS_HOME."?option=groups&edit=".$_GET["edit"]);
+	      header("location: ".OSS_HOME."?option=admin_groups&edit=".$_GET["edit"]);
 		  die();
 	   }
 	 $upd = $db->prepare("UPDATE ".OSSDB_PLAYERS." SET `rank` = '".$NewName."' WHERE `rank` = '".$OldName."'  ");
@@ -50,7 +50,7 @@
 	 $upd2 = $db->prepare("UPDATE ".OSSDB_GROUPS." SET `group` = '".$NewName."' WHERE `group` = '".$OldName."'  ");
 	 $result = $upd2->execute();
 	 
-	  header("location: ".OSS_HOME."?option=groups&edit=".$NewName);
+	  header("location: ".OSS_HOME."?option=admin_groups&edit=".$NewName);
 	  die();
   }
      
@@ -111,12 +111,12 @@
 	   $result = $sth->execute();
 	   
 	   if ( $sth->rowCount()>=1 OR empty($GroupName) ) {
-	      header("location: ".OSS_HOME."?option=groups&add=error");
+	      header("location: ".OSS_HOME."?option=admin_groups&add=error");
 		  die();
 	   }
 	   
 	   if ( (isset($GroupName) AND $GroupName == "superadmin") OR (isset($_GET["edit"]) AND $_GET["edit"] == "superadmin") ) {
-	      header("location: ".OSS_HOME."?option=groups");
+	      header("location: ".OSS_HOME."?option=admin_groups");
 		  die();
 	   }
 	   
@@ -144,9 +144,9 @@
 		 //commands = '".$AllowedCommands."', denies = '".$DissalowedCommands."' WHERE `group` = '".$GroupName."' ");
 		 $result = $ins->execute();
 		 
-		 if(isset($_GET["add"])) header("location: ".OSS_HOME."?option=groups");
+		 if(isset($_GET["add"])) header("location: ".OSS_HOME."?option=admin_groups");
 		 else
-		 header("location: ".OSS_HOME."?option=groups&edit=".$GroupName);
+		 header("location: ".OSS_HOME."?option=admin_groups&edit=".$GroupName);
 		 die();
 	 }
 	 

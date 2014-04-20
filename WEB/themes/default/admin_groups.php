@@ -3,7 +3,7 @@
 <?php if(!isset($_GET["edit"]) AND !isset($_GET["add"])) { ?>
 <div class="well bs-component">
 
-  <div><a href="<?=OSS_HOME?>?option=groups&amp;add" class="btn btn-primary">Add Group</a></div>
+  <div><a href="<?=OSS_HOME?>?option=admin_groups&amp;add" class="btn btn-primary">Add Group</a></div>
 
   <table class="table table-striped table-hover ">
   <thead>
@@ -20,10 +20,10 @@
   ?>
     <tr>
       <td width="260">
-		<a href="<?=OSS_HOME?>?option=groups&amp;edit=<?=$Group["group"]?>" class="btn btn-<?=$Group["class"]?>"><?=$Group["group"]?></a>
+		<a href="<?=OSS_HOME?>?option=admin_groups&amp;edit=<?=$Group["group"]?>" class="btn btn-xs btn-<?=$Group["class"]?>"><?=$Group["group"]?></a>
 		
 		<?php if(!$Group["root"]) {?>
-		<a href="javascript:;" onclick="if(confirm('Delete Group?')) { location.href='<?=OSS_HOME?>?option=groups&amp;remove=<?=$Group["group"]?>' }" class="floatR label label-danger">delete</a>
+		<a href="javascript:;" onclick="if(confirm('Delete Group?')) { location.href='<?=OSS_HOME?>?option=groups&amp;remove=<?=$Group["group"]?>' }" class="floatR btn btn-xs btn-danger">Remove</a>
 		<?php } ?>
 		
 	  </td>
@@ -41,13 +41,13 @@
 <div class="well bs-component">
    <h2> 
    <span class="btn btn-success btn-lg"><?=$GroupsData[0]["group"]?></span> 
-   <a href="<?=OSS_HOME?>?option=groups" class="btn btn-xs btn-info">&raquo; Back</a>
-   <a href="javascript:;" onclick="if(confirm('Delete Group?')) { location.href='<?=OSS_HOME?>?option=groups&amp;remove=<?=$GroupsData[0]["group"]?>' }" class="btn btn-xs btn-danger">delete</a>
+   <a href="<?=OSS_HOME?>?option=admin_groups" class="btn btn-xs btn-info">&raquo; Back</a>
+   <a href="javascript:;" onclick="if(confirm('Delete Group?')) { location.href='<?=OSS_HOME?>?option=admin_groups&amp;remove=<?=$GroupsData[0]["group"]?>' }" class="btn btn-xs btn-danger">delete</a>
    </h2>
   
 <?php if(!empty($_GET["add"]) AND $_GET["add"] == "error") { ?>
   <div class="alert alert-dismissable alert-danger">
-     <button type="button" class="close" data-dismiss="alert">×</button>
+     <button type="button" class="close" data-dismiss="alert">&times;</button>
      <strong>Error!</strong> The group name already exists or empty
    </div>
 <?php } ?>
