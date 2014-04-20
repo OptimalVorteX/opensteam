@@ -233,12 +233,20 @@ function OSS_EditUser( $userID ) {
    if(OSS_SuperAdmin() AND is_numeric($userID) ) {
    global $lang;
    ?>
+<<<<<<< HEAD
    <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&amp;id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
+=======
+   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
+>>>>>>> cc29fc4805cbd09f5de21d64cfeae7af12fba354
    <?php
    } else if(OSS_SuperAdmin() AND !is_numeric($userID) ) {
    global $lang;
    ?>
+<<<<<<< HEAD
    <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&amp;id=<?=$userID?>"><?=$lang["Edit"]?></a>
+=======
+   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&id=<?=$userID?>"><?=$lang["Edit"]?></a>
+>>>>>>> cc29fc4805cbd09f5de21d64cfeae7af12fba354
    <?php
    }
 }

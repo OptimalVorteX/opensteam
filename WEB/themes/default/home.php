@@ -18,6 +18,7 @@ Example:
       <tr>
          <th><a href="<?=OSS_HOME?>">#</a></th>
          <th><a href="<?=OSS_HOME?>?sort=player"><?=$lang["Player"]?></a></th>
+         <th>ID</th>
          <th><?=$lang["Location"]?></th>
          <th><a href="<?=OSS_HOME?>?sort=last_seen"><?=$lang["Last_Seen"]?></a></th>
          <th></th>
@@ -30,16 +31,18 @@ Example:
          ?>
       <tr <?=$Player["class"]?>>
          <td width="70"><?=OSS_SteamAvatar( $Player["avatar_medium"] )?></td>
-         <td width="250">
-		 
-		 <a class="text-info" href="<?=OSS_HOME?>?option=player&amp;id=<?=$Player["id"]?>">
-		   <?=$Player["playerName"]?>
-		</a>
-		 
-		 <a class="text-info" title="View Steam Community Profile" href="http://steamcommunity.com/profiles/<?=$Player["steamID"]?>/" target="_blank">
-		   <img src="<?=OSS_HOME?>img/steam.png" alt="steam" width="24" height="24" class="floatR" />
-		 </a>
-            <?=OSS_EditUser($Player["id"]) ?>
+         <td width="200">
+            <a class="text-info" href="<?=OSS_HOME?>?option=player&amp;id=<?=$Player["id"]?>">
+              <?php echo wordwrap($Player["playerName"], 25, "<br>" ) ?>
+            </a>
+          </td>
+          <td style="width: 30px">
+            <a class="text-info" title="View Steam Community Profile" href="http://steamcommunity.com/profiles/<?=$Player["steamID"]?>/" target="_blank">
+              <img src="<?=OSS_HOME?>img/steam.png" alt="steam" width="24" height="24" class="floatR" />
+            </a>
+            <div style="margin-top: 30px;">
+              <?=OSS_EditUser($Player["id"]) ?>
+            </div>
          </td>
          <td width="200">
             <!--<?=$Player["location"]?> -->
