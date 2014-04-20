@@ -40,7 +40,9 @@ Example:
             <a class="text-info" title="View Steam Community Profile" href="http://steamcommunity.com/profiles/<?=$Player["steamID"]?>/" target="_blank">
               <img src="<?=OSS_HOME?>img/steam.png" alt="steam" width="24" height="24" class="floatR" />
             </a>
-            <?=OSS_EditUser($Player["id"]) ?>
+            <div style="margin-top: 30px;">
+              <?=OSS_EditUser($Player["id"]) ?>
+            </div>
          </td>
          <td width="200">
             <!--<?=$Player["location"]?> -->
