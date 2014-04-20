@@ -74,7 +74,6 @@
  $lang["LoadingURL"]             = "Loading URL";
  $lang["LoadingURLInfo1"]        = "Open file <strong>server.cfg</strong> that is located in the following directory";
  $lang["LoadingURLInfo2"]        = "and add the following";
- $lang["LoadingURLInfo2"]        = "and add the following";
  $lang["SaveConfiguration"]      = "Save Configuration";
  
  $lang["FieldNotCompleted"]      = "You have not completed all the required fields.";
