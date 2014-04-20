@@ -96,7 +96,7 @@
    <tr>
      <th>#</th>
 	 <th><?=$lang["Player"]?></th>
-	 <th><?=$lang["Frags"]?></th>
+	 <th><?=$lang["Frag"]?></th>
 	 <th><?=$lang["Time"]?></th>
 	 <th><?=$lang["Option"]?></th>
    </tr>

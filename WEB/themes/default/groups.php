@@ -20,10 +20,10 @@
   ?>
     <tr>
       <td width="260">
-		<a href="<?=OSS_HOME?>?option=groups&amp;edit=<?=$Group["group"]?>" class="btn btn-xs btn-<?=$Group["class"]?>"><?=$Group["group"]?></a>
+		<a href="<?=OSS_HOME?>?option=groups&amp;edit=<?=$Group["group"]?>" class="btn btn-<?=$Group["class"]?>"><?=$Group["group"]?></a>
 		
 		<?php if(!$Group["root"]) {?>
-		<a href="javascript:;" onclick="if(confirm('Delete Group?')) { location.href='<?=OSS_HOME?>?option=groups&amp;remove=<?=$Group["group"]?>' }" class="floatR btn btn-xs btn-danger">Remove</a>
+		<a href="javascript:;" onclick="if(confirm('Delete Group?')) { location.href='<?=OSS_HOME?>?option=groups&amp;remove=<?=$Group["group"]?>' }" class="floatR label label-danger">delete</a>
 		<?php } ?>
 		
 	  </td>
