@@ -41,6 +41,7 @@ ulx send
 ulx showmotd
 ulx slap
 ulx slay
+ulx showgroups
 ulx spawnecho
 ulx spectate
 ulx sslay

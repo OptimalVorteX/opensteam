@@ -27,7 +27,8 @@ if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; }
 	  OSS_SaveConfig('$cfg["players_per_page"]', $cfg["players_per_page"], trim($_POST["players_per_page"]) );
       OSS_SaveConfig('$cfg["cache_time"]', $cfg["cache_time"], trim($_POST["cache_time"]) );
 	  OSS_SaveConfig('$cfg["debug"]', $cfg["debug"], trim($_POST["debug"]) );
-	  
+	  OSS_SaveConfig('$cfg["loading_ban_message"]', $cfg["loading_ban_message"], trim($_POST["loading_ban_message"]) );
+	  OSS_SaveConfig('$cfg["remove_players"]', $cfg["remove_players"], trim($_POST["remove_players"]) );
 	  header("location: ".OSS_HOME."?option=configuration");
 	  die();
   }

@@ -1,4 +1,12 @@
 <?php if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; } ?>
+
+<?php if(isset($_GET["success"])) { ?>
+<div class="alert alert-dismissable alert-success">
+   <button type="button" class="close" data-dismiss="alert">&times;</button>
+   <?=$lang["BanRemoved"] ?>
+</div>
+<?php } ?>
+
 <table class="table table-striped table-hover ">
   <thead>
     <tr>
@@ -15,12 +23,13 @@
   foreach ( $BansData as $Player ) {
   ?>
     <tr>
-      <td width="260">
+      <td width="290">
 	  
 		<a class="text-danger" href="<?=OSS_HOME?>?option=player&amp;id=<?=($Player["steam"])?>">
 		   <?=$Player["name"]?>
 		</a>
-	  
+		
+	  <?=OSS_DeleteBan($Player["id"])?>
 	  <?=OSS_EditUser($Player["steam"]) ?>
 	  </td>
 	  <td width="190"><?=OB_ExpireDateRemain($Player["expire_date"])?></td>

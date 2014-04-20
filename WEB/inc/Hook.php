@@ -59,52 +59,52 @@ function execute_action($where,$args=array())
 //_footer  - footer
 //_after_footer - content after OS footer
 
-function OPENBANS_INIT() { 
-  execute_action("OPENBANS_INIT");
+function OPENSTEAM_INIT() { 
+  execute_action("OPENSTEAM_INIT");
 }
 
-function OPENBANS_START() {
-  execute_action("OPENBANS_START");
+function OPENSTEAM_START() {
+  execute_action("OPENSTEAM_START");
 }
 
-function OPENBANS_HEAD() {
-  execute_action("OPENBANS_HEAD");
+function OPENSTEAM_HEAD() {
+  execute_action("OPENSTEAM_HEAD");
 }
 
-function OPENBANS_MENU() {
-  execute_action("OPENBANS_MENU");
+function OPENSTEAM_MENU() {
+  execute_action("OPENSTEAM_MENU");
 }
 
-function OPENBANS_BEFORE_CONTENT() {
-  execute_action("OPENBANS_BEFORE_CONTENT");
+function OPENSTEAM_BEFORE_CONTENT() {
+  execute_action("OPENSTEAM_BEFORE_CONTENT");
 }
 
-function OPENBANS_CONTENT() {
-  execute_action("OPENBANS_CONTENT");
+function OPENSTEAM_CONTENT() {
+  execute_action("OPENSTEAM_CONTENT");
 }
 
-function OPENBANS_AFTER_CONTENT() {
-  execute_action("OPENBANS_AFTER_CONTENT");
+function OPENSTEAM_AFTER_CONTENT() {
+  execute_action("OPENSTEAM_AFTER_CONTENT");
 }
 
-function OPENBANS_POST() {
-  execute_action("OPENBANS_POST");
+function OPENSTEAM_POST() {
+  execute_action("OPENSTEAM_POST");
 }
 
-function OPENBANS_FOOTER() {
-  execute_action("OPENBANS_FOOTER");
+function OPENSTEAM_FOOTER() {
+  execute_action("OPENSTEAM_FOOTER");
 }
 
 //more hooks
-function OPENBANS_CUSTOM() {
-  execute_action("OPENBANS_CUSTOM");
+function OPENSTEAM_CUSTOM() {
+  execute_action("OPENSTEAM_CUSTOM");
 }
 
-function OPENBANS_SUBSCRIBE() {
-  execute_action("OPENBANS_SUBSCRIBE");
+function OPENSTEAM_SUBSCRIBE() {
+  execute_action("OPENSTEAM_SUBSCRIBE");
 }
 
-function OPENBANS_META() {
+function OPENSTEAM_META() {
   execute_action("os_add_meta");
 }
 ?>

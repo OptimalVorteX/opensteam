@@ -227,6 +227,24 @@ function ulx.sid(calling_ply, target)
 	queryQ:start()
 end
 
+function ulx.showgroups(calling_ply)
+
+	local queryQ = ULXDB:query("SELECT `group` FROM `"..ULX_GROUPS_TABLE.."` WHERE `group`!='' ORDER BY FIELD(`group`, 'superadmin') ASC, `group` DESC LIMIT 10;")
+	queryQ.onData = function(Q,D)
+		queryQ.onSuccess = function(q)
+		  ULib.console( calling_ply, "------------" )
+          ULib.console( calling_ply, "All Groups:" )
+		  ULib.console( calling_ply, "------------" )
+          local playerInfo = queryQ:getData()
+		  for k,v in pairs(playerInfo) do
+		     ULib.console( calling_ply, v.group )
+		  end
+		end
+	end
+	queryQ.onError = function(Q,E) print("ulx showgroups threw an error:") print(E) end
+	queryQ:start()
+end
+
 
 local banuser = ulx.command( "User Management", "ulx banuser", ulx.banuser )
 banuser:addParam{ type=ULib.cmds.StringArg, hint="SteamID" }
@@ -250,5 +268,9 @@ local sid = ulx.command( "User Management", "ulx sid", ulx.sid )
 sid:addParam{ type=ULib.cmds.StringArg, hint="Player Name" }
 sid:defaultAccess( ULib.ACCESS_SUPERADMIN )
 sid:help( "Get SteamID from Player." )
+
+local sid = ulx.command( "User Management", "ulx showgroups", ulx.sid )
+sid:defaultAccess( ULib.ACCESS_SUPERADMIN )
+sid:help( "Get All Groups." )
 
 ConnectDB()

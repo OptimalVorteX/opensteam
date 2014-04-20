@@ -1,6 +1,6 @@
 <?php
 
-  if(isset($_SERVER["HTTP_COOKIE"])) die("This file is not called from the browser");
+  //if(isset($_SERVER["HTTP_COOKIE"])) die("This file is not called from the browser");
   
   // USAGE:
   // Add in: server.cfg
@@ -30,6 +30,7 @@
   include("../config.php");
   require_once('../inc/common.php');
   include("../inc/default-constants.php");
+  require_once('../lang/'.OSS_LANGUAGE.'.php');
   require_once('../inc/class.db.PDO.php'); 
   require_once('../inc/db_connect.php');
   
@@ -91,6 +92,21 @@ $UserIP = "'.$UserIP.'";
   //Add to DB
 
   if( isset($DB_INSERT) AND !empty($realname) ) {
+ 
+  //CHECK USER BAN
+  if($cfg["loading_ban_message"] == 1) {
+  
+    $checkBan = $db->prepare("SELECT * FROM `".OSSDB_BANS."` WHERE steam='".ConvertToSteam32($steamid)."' LIMIT 1");
+    $result = $checkBan->execute();
+    if ( $checkBan->rowCount()>=1) {
+     $BannedInfo = array();
+	 $row = $checkBan->fetch(PDO::FETCH_ASSOC);
+	 $BannedInfo["message"]  = $lang["LoadingYouAreBanned"];
+	 $BannedInfo["reason"]   = $row["reason"];
+	 $BannedInfo["bantime"]  = date(OSS_DATE_FORMAT, strtotime($row["bantime"]) );
+	 $BannedInfo["expire"]   = $row["expire"];
+     }
+  }
   
   $sth = $db->prepare("SELECT COUNT(*) FROM `".OSSDB_PLAYERS."` WHERE steamID='".$steamid."' LIMIT 1");
   $result = $sth->execute();

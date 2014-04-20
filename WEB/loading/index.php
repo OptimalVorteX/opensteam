@@ -28,6 +28,13 @@
 	    <td width="84"><img style="border: 6px solid #585858;" width="64" src="<?=$avatarMedium?>" /></td>
 		<td style="vertical-align:top;">
 		<h2>Hi <span style="color: #920000"><?=$realname?></span></h2>
+		<?php if(!empty($BannedInfo) ) { ?>
+		<div style="color:red; font-weight:bold;"><?=$BannedInfo["message"]?></div>
+		<?php if(!empty($BannedInfo["reason"])) { ?>
+		<div><?=$BannedInfo["reason"]?></div>
+		<?php } ?>
+		<div><?=OB_ExpireDateRemain($BannedInfo["expire"])?></div>
+		<?php } ?>
 		<div style="margin-top:16px;"><b>We are playing:</b> <?=$mapname?></div>
 		</td>
 	  </tr>

@@ -6,6 +6,19 @@
 	
     $sql = "";
 	
+    //Remove ban
+	if(isset($_GET["rban"]) AND is_numeric($_GET["rban"])) {
+	
+	$banid = $_GET["rban"];
+	$sth = $db->prepare( "DELETE FROM ".OSSDB_BANS." WHERE id=:id LIMIT 1" );
+	$sth->bindValue(':id', $banid, PDO::PARAM_INT); 
+	$result = $sth->execute();
+	if(isset($_GET["page"]) AND is_numeric($_GET["page"]) ) $page = "&page=".(int)$_GET["page"];
+    else $page = "";
+	header("location: ".OSS_HOME."?option=bans".$page."&success" );
+	die();
+	}
+	
 	if ( isset($_GET["search"]) AND strlen($_GET["search"])>=2 ) {
 	
 	  $search = strip_tags( trim($_GET["search"]) );

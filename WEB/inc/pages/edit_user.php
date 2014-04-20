@@ -3,6 +3,7 @@
   if ( OSS_SuperAdmin() AND isset($_GET["id"]) AND (is_numeric($_GET["id"]) OR strstr( $_GET["id"], "STEAM_") ) ) {
     
 	$pid = trim($_GET["id"]);
+    $sql = "";
 
 	if(!is_numeric($pid) AND strstr( $pid, "STEAM_") ) {
 	

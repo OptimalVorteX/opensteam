@@ -233,15 +233,28 @@ function OSS_EditUser( $userID ) {
    if(OSS_SuperAdmin() AND is_numeric($userID) ) {
    global $lang;
    ?>
-   <a class="btn btn-info btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
+   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&amp;id=<?=(int)$userID?>"><?=$lang["Edit"]?></a>
    <?php
    } else if(OSS_SuperAdmin() AND !is_numeric($userID) ) {
    global $lang;
    ?>
-   <a class="btn btn-info btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&id=<?=$userID?>"><?=$lang["Edit"]?></a>
+   <a class="btn btn-warning btn-xs floatR" href="<?=OSS_HOME?>?option=edit_user&amp;id=<?=$userID?>"><?=$lang["Edit"]?></a>
    <?php
    }
 }
+
+function OSS_DeleteBan( $userID ) {
+    
+   if(OSS_SuperAdmin() AND is_numeric($userID) ) {
+   global $lang;
+   if(isset($_GET["page"]) AND is_numeric($_GET["page"]) ) $page = "&amp;page=".(int)$_GET["page"];
+   else $page = "";
+   ?>
+   <a class="btn btn-danger btn-xs floatR" href="javascript:;" onclick="if(confirm('Remove Ban?')) { location.href='<?=OSS_HOME?>?option=bans&rban=<?=(int)$userID?><?=$page?>'} ">&times;</a>
+   <?php
+   } 
+}
+
 
 function OSS_SteamAvatar( $link = "", $w="64", $h="64" ) {
    if(!empty($link) ) {

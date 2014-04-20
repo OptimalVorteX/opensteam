@@ -15,6 +15,6 @@
 </footer>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="<?=OSS_THEME_LINK?>js/bootstrap.js"></script>
-<script src="<?=OSS_THEME_LINK?>bootwatch.js"></script>
+<script src="<?=OSS_THEME_LINK?>js/scripts.js"></script>
 </body>
 </html>

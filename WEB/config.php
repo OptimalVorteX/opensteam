@@ -24,6 +24,11 @@ $cfg["default_style"] = 'default';
 $cfg["logo_text"] = 'OpenSteam';
 
 $cfg["players_per_page"] = '30';
+//Show message info for banned users on loading screen
+$cfg["loading_ban_message"] = '1';
+
+//Remove inactive players. Default:(inactive time: 90 days)
+$cfg["remove_players"] = '90';
 
 //Cache steamIDs (used for loading url). Minutes
 $cfg["cache_time"] = '5';

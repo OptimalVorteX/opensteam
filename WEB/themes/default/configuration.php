@@ -13,11 +13,11 @@
    <table class="table table-striped table-hover ">
       <thead>
          <tr>
-            <td width="180"><strong>Home Title:</strong></td>
+            <td width="180"><strong><?=$lang["HomeTitle"]?>:</strong></td>
             <td><input type="text" name="home_title" value="<?=$cfg["home_title"]?>" size="75" /></td>
          </tr>
          <tr>
-            <td width="180"><strong>Language:</strong></td>
+            <td width="180"><strong><?=$lang["Language"]?>:</strong></td>
             <td>
                <select name="lang">
                   <?php foreach($LangOptions as $language) { ?>
@@ -27,39 +27,51 @@
             </td>
          </tr>
          <tr>
-            <td width="180"><strong>Date Format:</strong></td>
+            <td width="180"><strong><?=$lang["DateFormat"]?>:</strong></td>
             <td><input type="text" name="date_format" value="<?=$cfg["date_format"]?>" size="25" /></td>
          </tr>
          <tr>
-            <td width="180"><strong>Players Per Page:</strong></td>
+            <td width="180"><strong><?=$lang["PlayersPerPage"]?>:</strong></td>
             <td><input type="text" name="players_per_page" value="<?=$cfg["players_per_page"]?>" size="5" /></td>
          </tr>
          <tr>
-            <td width="180"><strong>Cache Steam Files:</strong></td>
-            <td><input type="text" name="cache_time" value="<?=$cfg["cache_time"]?>" size="2" /> min.</td>
+            <td width="180"><strong><?=$lang["BanInfoMessage"]?>:</strong></td>
+            <td>
+               <select name="loading_ban_message">
+                  <?php if($cfg["loading_ban_message"]=='1') $s='selected="selected"'; else $s="";?>
+                  <option <?=$s?> value="1"><?=$lang["Show"]?></option>
+                  <?php if($cfg["loading_ban_message"]=='0') $s='selected="selected"'; else $s="";?>
+                  <option <?=$s?> value="0"><?=$lang["Hide"]?></option>
+               </select>
+			   <div><?=$lang["ShowHideInfo"]?></div>
+            </td>
+         </tr>
+		 <tr>
+            <td width="180"><strong><?=$lang["CacheSteamFiles"]?>:</strong></td>
+            <td><input type="text" name="cache_time" value="<?=$cfg["cache_time"]?>" size="2" /> <?=$lang["min"]?>.</td>
          </tr>
          <tr>
-            <td width="180"><strong>Error Reporting:</strong></td>
+            <td width="180"><strong><?=$lang["ErrorReporting"]?>:</strong></td>
             <td>
                <select name="debug">
                   <?php if($debug=='1') $s='selected="selected"'; else $s="";?>
-                  <option <?=$s?> value="1">Yes</option>
+                  <option <?=$s?> value="1"><?=$lang["Yes"]?></option>
                   <?php if($debug=='0') $s='selected="selected"'; else $s="";?>
-                  <option <?=$s?> value="0">No</option>
+                  <option <?=$s?> value="0"><?=$lang["No"]?></option>
                </select>
             </td>
          </tr>
          <tr>
-            <td width="180"><strong>Loading URL:</strong></td>
+            <td width="180"><strong><?=$lang["LoadingURL"]?>:</strong></td>
             <td>
                <input type="text" value='sv_loadingurl "<?=OSS_HOME?>loading/?mapname=%m&steamid=%s"' size="87" />
                <div class="alert alert-dismissable alert-success">
                   <button type="button" class="close" data-dismiss="alert">×</button>
-                  Open file <strong>server.cfg</strong> that is located in the following directory 
+                  <?=$lang["LoadingURLInfo1"]?>
                   <strong>
                      <div>GAME_ROOT/garrysmod/cfg
                   </strong>
-                  and add the following</div>
+                  <?=$lang["LoadingURLInfo2"]?></div>
                   <div>sv_loadingurl "<?=OSS_HOME?>loading/?mapname=%m&steamid=%s"</div>
                </div>
             </td>
@@ -67,7 +79,7 @@
 		 
          <tr>
             <td width="180"></td>
-            <td><input type="<?=$ButtonType?>" <?=$Alert?> name="save_config" value="Save Configuration" class="btn btn-primary" /></td>
+            <td><input type="<?=$ButtonType?>" <?=$Alert?> name="save_config" value="<?=$lang["SaveConfiguration"]?>" class="btn btn-primary" /></td>
          </tr>
       </thead>
       <tbody>

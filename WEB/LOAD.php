@@ -14,11 +14,11 @@ if (strstr($_SERVER['REQUEST_URI'], basename(__FILE__) ) ) {header('HTTP/1.1 404
    require_once('inc/db_connect.php');
    require_once("inc/setup_user.php");
    require_once("inc/db_functions.php");
-   OPENBANS_INIT();
+   OPENSTEAM_INIT();
 
    if (file_exists('plugins/index.php')) require_once('plugins/index.php');
    
-   OPENBANS_START();
+   OPENSTEAM_START();
    
    if ( file_exists('themes/'.OSS_THEMES_DIR.'/functions.php') )
    include('themes/'.OSS_THEMES_DIR.'/functions.php');

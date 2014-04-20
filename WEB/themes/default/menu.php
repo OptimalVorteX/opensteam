@@ -23,8 +23,12 @@
                </li>
             </ul>
             <form class="navbar-form navbar-left" action="" method="get">
-               <input onkeydown="if (event.keyCode == 13) { location.href='<?=OSS_HOME?>?option=<?php if(isset($_GET["option"]) ) echo $_GET["option"]; ?>&search='+srch.value; return false; }" type="text" id="srch" class="form-control col-lg-8" placeholder="Search" value="<?=$search ?>" />
-               <input type="button" onclick="location.href='<?=OSS_HOME?>?option=<?php if(isset($_GET["option"]) ) echo $_GET["option"]; ?>&search='+srch.value" value="Search Player" class="btn btn-primary" />
+	      <div class="input-group" style="width: 350px">
+            <input onkeydown="if (event.keyCode == 13) { location.href='<?=OSS_HOME?>?option=<?php if(isset($_GET["option"]) ) echo $_GET["option"]; ?>&amp;search='+srch.value; return false; }" type="text" id="srch" class="form-control col-lg-8" placeholder="<?=$lang["Search"]?>" value="<?=$search ?>" />
+            <span class="input-group-btn">
+            <input type="button" onclick="location.href='<?=OSS_HOME?>?option=<?php if(isset($_GET["option"]) ) echo $_GET["option"]; ?>&amp;search='+srch.value" value="<?=$lang["SearchPlayer"]?>" class="btn btn-primary" />
+            </span>
+           </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
                <?php if(!isset($_SESSION["steamID"])) { ?>
@@ -35,7 +39,7 @@
                   <a  class="dropdown-toggle" data-toggle="dropdown" href="#" id="user_panel"><?=$_SESSION["name"]?> <span class="caret"></span></a>
                   <ul class="dropdown-menu" aria-labelledby="user_panel">
                      <?php if (isset($_SESSION["admin"]) ) { ?>
-					 
+					 <li><a href="<?=OSS_HOME?>?option=servers">Servers</a></li>
                      <li><a href="<?=OSS_HOME?>?option=groups"><?=$lang["ManageGroups"]?></a></li>
                      <li><a href="<?=OSS_HOME?>?option=configuration"><?=$lang["Configuration"]?></a></li>
                      <?php } ?>
