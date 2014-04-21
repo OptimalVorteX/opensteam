@@ -18,6 +18,7 @@
    $_SESSION["logged"] = $Validate;
    $_SESSION["steamID"] = ConvertToSteam32($Validate);
  }
+ OSS_Curl();
  header("location: ".OSS_HOME."");
  die();
  }

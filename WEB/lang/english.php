@@ -75,6 +75,19 @@
  $lang["LoadingURLInfo1"]        = "Open file <strong>server.cfg</strong> that is located in the following directory";
  $lang["LoadingURLInfo2"]        = "and add the following";
  $lang["SaveConfiguration"]      = "Save Configuration";
+ $lang["AddGroup"]               = "Add Group";
+ $lang["Commands"]               = "Commands";
+ $lang["CommandsTitle"]          = "Commands";
+ $lang["Denies"]                 = "Denies";
+ $lang["AvailableCommands"]      = "Available Commands";
+ $lang["TotalCommands"]          = "There are total of";
+ $lang["CommandsLower"]          = "commands";
+ $lang["CommandsError"]          = "<strong>Error!</strong> The group name already exists or empty";
+ $lang["GroupName"]              = "Group Name";
+ $lang["ChangeGroupName"]        = "Change Group Name";
+ $lang["AllowedCommands"]        = "Allowed commands";
+ $lang["DisallowedCommands"]     = "Disallowed commands";
+ $lang["SaveGroup"]              = "Save Group";
  
  $lang["FieldNotCompleted"]      = "You have not completed all the required fields.";
  $lang["ServerName"]             = "Server Name";
@@ -86,6 +99,7 @@
  $lang["IP_Port"]                = "IP:port";
  $lang["Option"]                 = "Option";
  $lang["Remove"]                 = "Remove";
+ $lang["Delete"]                 = "delete";
  
  $lang["ServerRemoteControl"]    = "Server Remote Control";
  $lang["SendCommand"]            = "Send Command";

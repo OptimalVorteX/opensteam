@@ -246,6 +246,21 @@ function ulx.showgroups(calling_ply)
 end
 
 
+function ulx.checkban(calling_ply, target)
+    
+	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `name`='"..target.."' AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00') ;")
+	queryQ.onData = function(Q,D)
+		queryQ.onSuccess = function(q)
+		    local ExpireDate = D.expire
+			if(D.expire == "0000-00-00 00:00:00") then ExpireDate = "[PERMANENT]"; end
+			ulx.fancyLogAdmin( calling_ply, "#A "..target.." is banned. Expires: "..ExpireDate )
+		end
+	end
+	queryQ.onError = function(Q,E) print("'checkban' threw an error:") print(E) end
+	queryQ:start()
+
+end
+
 local banuser = ulx.command( "User Management", "ulx banuser", ulx.banuser )
 banuser:addParam{ type=ULib.cmds.StringArg, hint="SteamID" }
 banuser:addParam{ type=ULib.cmds.NumArg, hint="Ban time (in minutes) (optional)", ULib.cmds.optional }
@@ -272,5 +287,10 @@ sid:help( "Get SteamID from Player." )
 local sid = ulx.command( "User Management", "ulx showgroups", ulx.sid )
 sid:defaultAccess( ULib.ACCESS_SUPERADMIN )
 sid:help( "Get All Groups." )
+
+local sid = ulx.command( "User Management", "ulx checkban", ulx.checkban )
+sid:addParam{ type=ULib.cmds.StringArg, hint="Player Name" }
+sid:defaultAccess( ULib.ACCESS_SUPERADMIN )
+sid:help( "Check if user is banned." )
 
 ConnectDB()

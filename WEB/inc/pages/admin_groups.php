@@ -8,6 +8,28 @@
   
   $sql = "";
   
+  //Save Commands
+  if(isset($_GET["commands"])) {
+    
+	if(isset($_POST["save_commands"]) AND is_writable("inc/commands.php") ) {
+	   $CommandList = $_POST["all_commands"];
+	   $ch = explode("\n", $CommandList);
+	   $str="";
+	   foreach($ch as $com) {
+	     $com = trim($com);
+	     if(!empty($com) AND strlen($com)>=2 ) $str.=$com."\n";
+	   }
+	   $str = substr($str, 0, strlen($str)-1 );
+	   if(!empty($com)) file_put_contents( "inc/commands.php", $str );
+		 header("location: ".OSS_HOME."?option=admin_groups&commands");
+	     die();
+	}
+	
+    $AllCommands = file_get_contents("inc/commands.php");
+	$TotalCommands = count( explode("\n", $AllCommands) );
+	if(!is_writable("inc/commands.php")) $CommandsMessage = "File <strong>commands.php</strong> is not writable";
+  }
+  
   //REMOVE GROUP
   if(isset($_GET["remove"]) AND !empty($_GET["remove"]) AND $_GET["remove"]!="superadmin") {
   
@@ -16,7 +38,7 @@
 	 $sth->bindValue(':name', $del, PDO::PARAM_STR); 
 	 $result = $sth->execute();
 	 
-	 if($del!='user') {
+	 if($del!='user' AND $del!='superadmin') {
 	   $upd = $db->prepare("UPDATE ".OSSDB_PLAYERS." SET `rank` = 'user' WHERE `rank` = '".$del."'  ");
 	   $result = $upd->execute();
 	 }
@@ -44,11 +66,15 @@
 	      header("location: ".OSS_HOME."?option=admin_groups&edit=".$_GET["edit"]);
 		  die();
 	   }
+	 //Do not change superadmin  
+	 if($OldName!="superadmin") {
+	 
 	 $upd = $db->prepare("UPDATE ".OSSDB_PLAYERS." SET `rank` = '".$NewName."' WHERE `rank` = '".$OldName."'  ");
 	 $result = $upd->execute();
 	 
 	 $upd2 = $db->prepare("UPDATE ".OSSDB_GROUPS." SET `group` = '".$NewName."' WHERE `group` = '".$OldName."'  ");
 	 $result = $upd2->execute();
+	 } else $NewName = "superadmin";
 	 
 	  header("location: ".OSS_HOME."?option=admin_groups&edit=".$NewName);
 	  die();
@@ -167,11 +193,13 @@
 	   $GroupCommand[$c]["num"] = $c;
 	   $GroupCommand[$c]["allowed"] = 1;
 	   $GroupCommand[$c]["check"]   = '';
+	   $GroupCommand[$c]["colour"]  = 'com_deselected';
 	   foreach($SelCommands as $s ) {
 		  $s = trim($s);
 		  if( $GroupCommand[$c]["command"] == $s) {
 		    $GroupCommand[$c]["allowed"] = 1;
 		    $GroupCommand[$c]["check"]   = 'checked';
+			$GroupCommand[$c]["colour"]  = 'com_selected';
 		    }
 
 	   }
@@ -187,12 +215,14 @@
 	   $GroupDeniedCommand[$c]["num"] = $c;
 	   $GroupDeniedCommand[$c]["allowed"] = 1;
 	   $GroupDeniedCommand[$c]["check"]   = '';
+	   $GroupDeniedCommand[$c]["colour"]  = 'com_deselected';
 	   foreach($DeniedCommands as $d ) {
 		  $d = trim($d);
 		  if(
 		    $GroupDeniedCommand[$c]["command"] == $d) {
 		    $GroupDeniedCommand[$c]["allowed"] = 1;
 		    $GroupDeniedCommand[$c]["check"]   = 'checked';
+			$GroupDeniedCommand[$c]["colour"]  = 'com_selected';
 		    }
 
 	   }

@@ -5809,3 +5809,5 @@ footer a { color: #D3D3D3; }
 .floatR { float:right; }
 .edit_user_link { font-size: 11px; float: right; }
 .command_list { font-size:12px; }
+.com_selected    { color:#106E27 }
+.com_deselected { color:#D43F3A }

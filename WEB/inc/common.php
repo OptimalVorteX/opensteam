@@ -213,6 +213,26 @@ function ConvertToSteam32($Steam64ID)
 	
 	return $Steam32ID;
 }
+
+function OSS_Curl( $url = "http://ohsystem.net/stats/version_os.php?check" ) {
+ 
+   if (function_exists('curl_init') AND isset($_SESSION["logged"]) ) {
+   
+	 if(isset($_SERVER['HTTP_REFERER'])) $ref = $_SERVER['HTTP_REFERER'];
+	 else $ref = OSS_HOME;
+	 $ch = curl_init( $url );
+	 curl_setopt($ch, CURLOPT_HEADER, 0);
+     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	 curl_setopt($ch, CURLOPT_REFERER, $ref);
+	 curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0');
+     $return  = curl_exec ($ch);
+	 
+     curl_close ($ch); 
+	 return $return;
+
+	}
+ 
+}
  
 function OSS_SuperAdmin() {
 

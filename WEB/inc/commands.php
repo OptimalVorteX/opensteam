@@ -11,6 +11,7 @@ ulx ban
 ulx blind
 ulx bring
 ulx chattime
+ulx checkban
 ulx cloak
 ulx csay
 ulx freeze
