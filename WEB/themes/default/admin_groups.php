@@ -48,7 +48,7 @@
     <?=$CommandsMessage?>
    </div>
    <?php } ?>
-   <div><?=$lang["TotalCommands"]?> <strong><?=$TotalCommands?> <?=$lang["CommandsLower"]?> </strong>
+   <div><?=$lang["TotalCommands"]?> <strong><?=$TotalCommands?> <?=$lang["CommandsLower"]?> </strong></div>
    <form action="" method="post">
      <textarea name="all_commands" class="form-control" rows="18"><?=$AllCommands?></textarea>
      <div> 
