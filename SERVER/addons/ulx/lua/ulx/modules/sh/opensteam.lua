@@ -409,13 +409,13 @@ sid:addParam{ type=ULib.cmds.StringArg, hint="Player Name" }
 sid:defaultAccess( ULib.ACCESS_SUPERADMIN )
 sid:help( "Get SteamID from Player." )
 
-local showgroups = ulx.command( "User Management", "ulx showgroups", ulx.sid )
-sid:defaultAccess( ULib.ACCESS_SUPERADMIN )
-sid:help( "Get All Groups." )
+local showgroups = ulx.command( "User Management", "ulx showgroups", ulx.showgroups )
+showgroups:defaultAccess( ULib.ACCESS_SUPERADMIN )
+showgroups:help( "Get All Groups." )
 
 local checkban = ulx.command( "User Management", "ulx checkban", ulx.checkban )
-sid:addParam{ type=ULib.cmds.StringArg, hint="Player Name" }
-sid:defaultAccess( ULib.ACCESS_SUPERADMIN )
-sid:help( "Check if user is banned." )
+checkban:addParam{ type=ULib.cmds.StringArg, hint="Player Name" }
+checkban:defaultAccess( ULib.ACCESS_SUPERADMIN )
+checkban:help( "Check if user is banned." )
 
 ConnectDB()
