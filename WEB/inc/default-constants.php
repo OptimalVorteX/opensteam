@@ -17,8 +17,10 @@ define('OSSDB_PREFIX',      $cfg["db_prefix"] );
 
 //TABLES
 define('OSSDB_BANS',            OSSDB_PREFIX.'bans'); 
+define('OSSDB_CONFIG',          OSSDB_PREFIX.'config'); 
 define('OSSDB_PLAYERS',         OSSDB_PREFIX.'users'); 
-define('OSSDB_GROUPS',          OSSDB_PREFIX.'groups'); 
+define('OSSDB_GROUPS',          OSSDB_PREFIX.'groups');
+define('OSSDB_SERVERS',         OSSDB_PREFIX.'servers'); 
 
 define('OSS_THEMES_DIR',              $cfg["default_style"] );
 define('OSS_THEME_LINK',              OSS_HOME."themes/".OSS_THEMES_DIR."/");
