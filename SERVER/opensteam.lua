@@ -13,10 +13,136 @@ local ULX_PASSWORD = "password"
 local ULX_BANS_TABLE    = "ph_bans"
 local ULX_PLAYERS_TABLE = "ph_users"
 local ULX_GROUPS_TABLE  = "ph_groups"
+local ULX_CONFIG_TABLE  = "ph_config"
 local ULXDB
 
 local BAN_TIME = 7200
 local ALLOW_PERM_BANS = 1
+
+GEOIP = GEOIP or {}
+GEOIP.NoTxt = false
+GEOIP.BannedCountries = {}
+GEOIP.PlayerIP = {}
+GEOIP.EnableGeoIP = 1
+
+if ( GEOIP.EnableGeoIP == 1 ) then 
+hook.Add("Initialize", "LoadBannedCountries", function()
+   		local queryQ = ULXDB:query("SELECT `config_value` FROM `"..ULX_CONFIG_TABLE.."` WHERE `config_name` = 'country_bans' ;")
+		queryQ.onData = function(Q,D)
+		  queryQ.onSuccess = function(q)
+            local c = 0
+			str = D.config_value
+			Msg( "[GeoIP] Banned Countries: "..tostring(str).."\n" )
+            for v in str:gmatch("[^,]+") do
+              GEOIP.BannedCountries[c] = v
+		      c = c+1
+            end
+		  end
+	    end
+	    queryQ.onError = function(Q,E) print("'country_bans' threw an error:") print(E) end
+	    queryQ:start()
+end)
+
+hook.Add("Initialize", "LoadGeoIPDatabase", function()
+		started = os.clock()
+		Msg("[GeoIP] Loading GeoIP Database..")
+		geolist = {}
+
+		local geo = file.Read("geoip.txt")
+		
+		if geo == nil then
+			print("[GeoIP] ERROR: geoip.txt not found!")
+			GEOIP.NoTxt = true
+			return
+		end
+		
+		local geo = string.Explode("\n", geo)
+		local lim = table.Count(geo)
+		local exp = string.Explode
+		local cmm = ","
+		
+		prcnt = math.floor(lim / 100)
+
+		local function SetG(i)
+			return exp(cmm, geo[i]) -- so it won't struggle with infinite loop errors.
+		end
+		
+		for i=1, lim do
+			geolist[i] = SetG(i)
+			if i == prcnt then
+				Msg(".") prcnt = prcnt + prcnt
+			end
+		end
+		
+		Msg("Done!\n[GeoIP] Loaded in "..os.clock() - started.."\n")
+end)
+	
+	
+	hook.Add("PlayerConnect", "PlayerIPCheck", function(name, address)
+		if GEOIP.NoTxt then
+			--GEOIP.InformAll("Player "..name.." has joined the game")
+			return
+		end
+		
+		local ip = string.sub(address,1,string.find(address,":") - 1)
+		local ip = string.Explode(".",ip)
+		local decimal = (ip[1]*16777216) + (ip[2]*65536) + (ip[3]*256) + ip[4]
+		
+		-- Localizing makes it faster.
+		local tonum = tonumber
+		local sub = string.sub
+		local len = string.len
+		
+		local function glist(b, n)
+			return geolist[b][n]
+		end
+		
+		local function between(b)
+			return decimal >= tonum(sub(glist(b,3),2,tonum(len(glist(b,3))-1))) && decimal <= tonum(sub(glist(b,4),2,tonum(len(glist(b,4))-1)))
+		end
+		
+		for k in pairs(geolist) do
+			if between(k) then
+				from  = sub(glist(k,6),2,len(glist(k,6))-1)
+				code  = ""
+				if from != nil then
+				    code  = ""..sub(glist(k,5),2,len(glist(k,5))-1)..""
+					local BanCount = table.Count(GEOIP.BannedCountries)
+					local ShowMessage = 1
+					   for i=0, BanCount do
+					     if ( GEOIP.BannedCountries[i] == code ) then
+						     RunConsoleCommand( "kick", name )
+							 print("[GeoIP] Kicking "..name..". Country ban ["..from.."] " )
+							 ShowMessage = 0
+						 end
+					   end
+					if ShowMessage == 1 then
+					print("[GeoIP] Player "..name.." has joined from "..from.." ("..code..")" )
+					end
+					GEOIP.PlayerIP[ip] = from
+				end
+				
+				break -- no need for further check.
+			end
+		end
+		
+		if from == nil then 
+			print("[GeoIP] Player "..name.." has joined the game")
+			GEOIP.PlayerIP[ip] = "N/A"
+		end
+		
+		from = nil
+		
+		return
+	end)
+	
+	hook.Add("PlayerInitialSpawn", "GEOIP.PLinit", function(pl)
+		
+		pl.From = GEOIP.PlayerIP[string.sub(pl:IPAddress(),1,string.find(pl:IPAddress(),":") - 1)]
+		
+	end)
+
+end	 -- GeoIP enabled/disabled
 
 local function ConnectDB()
 	ULXDB = mysqloo.connect(ULX_HOST, ULX_USERNAME, ULX_PASSWORD, ULX_DATABASE, ULX_PORT)
@@ -67,7 +193,7 @@ local function GetPlayerFromDB(player)
 			
 			str = D.user_commands
             allowed = {}
-		    c = 0;
+		    c = 0
             for v in str:gmatch("[^\r\n]+") do
               allowed[c] = v
 		      c = c+1
@@ -75,7 +201,7 @@ local function GetPlayerFromDB(player)
 			
 			strD = D.disallowed_commands
             denies = {}
-		    c = 0;
+		    c = 0
             for v in strD:gmatch("[^\r\n]+") do
               denies[c] = v
 		      c = c+1
@@ -104,7 +230,6 @@ end
 
 hook.Add( "PlayerAuthed", "playerauthed",        CheckUserBan )
 hook.Add( "PlayerAuthed", "GetPlayerDataFromDB", GetPlayerFromDB)
-
 
 hook.Add("ULibPlayerTarget", "HookBanRemoveUserFromDatabase", function(player, cmd, target)
 	if (cmd == "ulx banuser" && target) then

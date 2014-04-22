@@ -1,5 +1,6 @@
 <?php
 if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; } 
+
   if ( OSS_SuperAdmin() ) {
   
   if(isset($_POST["country_bans"])) {
@@ -33,19 +34,23 @@ if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; }
     if (file_exists("inc/countries.php")) { 
 	  
 	  include("inc/countries.php"); 
-	
-	  $AllCountries = array();
+	  $TotalCountries = count($Countries);
+	  $AllCountries   = array();
 	  $c = 0;
-	  
+
 	  foreach($Countries as $code=>$Country) {
 	  
 	    $AllCountries[$c]["country"] = $Country;
 		$AllCountries[$c]["code"]    = trim($code);
 		
 		$AllCountries[$c]["checked"]    = '';
-		
+		$AllCountries[$c]["colour"]     = '';
+
 		  foreach($BannedCountries as $bc) {
-		     if( trim($bc) == trim($code) ) $AllCountries[$c]["checked"]    = 'checked="checked"';
+		     if( trim($bc) == trim($code) ) {
+			 $AllCountries[$c]["checked"]    = 'checked="checked"';
+			 $AllCountries[$c]["colour"]     = 'class="com_deselected"';
+			 }
 		  }
 
 		$c++;
@@ -57,6 +62,9 @@ if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; }
 	   die();
 	}
 
+} else {
+	  header("location: ".OSS_HOME);
+	  die();
 }
   
 ?>

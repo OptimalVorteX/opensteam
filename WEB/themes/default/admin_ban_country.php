@@ -6,7 +6,7 @@
 	<form action="" method="post">
 	<?php foreach ($AllCountries as $c) { ?>
 	<div>
-	  <label for="<?=$c["code"]?>">
+	  <label for="<?=$c["code"]?>" <?=$c["colour"]?>>
 	    <input type="checkbox" name="country[<?=$c["code"]?>]" <?=$c["checked"]?> id="<?=$c["code"]?>" /> [<?=$c["code"]?>] <?=$c["country"]?>
 	  </label>
 	</div>
