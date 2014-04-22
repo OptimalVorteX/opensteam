@@ -34,6 +34,8 @@
  $lang["Expired"]                = "Expired";
  $lang["Remain"]                 = "remain";
  $lang["Permanent"]              = "Permanent";
+ $lang["BanCountry"]             = "Ban Country";
+ $lang["SaveBan"]                = "Save Ban";
  
  //Message on loading screen for banned users
  $lang["LoadingYouAreBanned"]    = "You Are Banned";

@@ -14,6 +14,15 @@ CREATE TABLE IF NOT EXISTS `ph_bans` (
 
 -- --------------------------------------------------------
 
+DROP TABLE IF EXISTS `ph_config`;
+CREATE TABLE IF NOT EXISTS `ph_config` (
+  `config_name` varchar(255) NOT NULL,
+  `config_value` mediumtext NOT NULL,
+  UNIQUE KEY `config_name` (`config_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
 DROP TABLE IF EXISTS `ph_users`;
 CREATE TABLE IF NOT EXISTS `ph_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
