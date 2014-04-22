@@ -35,7 +35,7 @@
                <li><a href="<?=OSS_HOME?>?option=login"><?=$lang["Login"]?></a></li>
                <li><a href="<?=OSS_HOME?>?option=login"><?=$lang["Register"]?></a></li>
                <?php } else { ?>
-               <li class="dropdown">
+               <li class="dropdown" style="width: 120px;">
                   <a  class="dropdown-toggle" data-toggle="dropdown" href="#" id="user_panel"><?=$_SESSION["name"]?> <span class="caret"></span></a>
                   <ul class="dropdown-menu" aria-labelledby="user_panel">
                      <?php if (isset($_SESSION["admin"]) ) { ?>
