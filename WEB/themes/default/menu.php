@@ -39,7 +39,9 @@
                   <a  class="dropdown-toggle" data-toggle="dropdown" href="#" id="user_panel"><?=$_SESSION["name"]?> <span class="caret"></span></a>
                   <ul class="dropdown-menu" aria-labelledby="user_panel">
                      <?php if (isset($_SESSION["admin"]) ) { ?>
+					 <li><a href="<?=OSS_HOME?>?option=admin_add_admin"><?=$lang["AddAdmin"]?></a></li>
 					 <li><a href="<?=OSS_HOME?>?option=admin_servers"><?=$lang["Servers"]?></a></li>
+					 <li><a href="<?=OSS_HOME?>?option=admin_ban_country"><?=$lang["BanCountry"]?></a></li>
                      <li><a href="<?=OSS_HOME?>?option=admin_groups"><?=$lang["ManageGroups"]?></a></li>
                      <li><a href="<?=OSS_HOME?>?option=admin_configuration"><?=$lang["Configuration"]?></a></li>
                      <?php } ?>

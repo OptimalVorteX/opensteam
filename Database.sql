@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `ph_users` (
   `avatar_medium` varchar(255) NOT NULL,
   `location` varchar(60) NOT NULL,
   `playerName` varchar(150) NOT NULL,
-  `last_connection` varchar(20) NOT NULL,
+  `last_connection` datetime NOT NULL,
   `connections` int(10) unsigned NOT NULL,
   `rank` varchar(100) NOT NULL DEFAULT 'user',
   `user_ip` varchar(20) NOT NULL,

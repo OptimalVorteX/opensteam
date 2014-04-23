@@ -91,6 +91,16 @@
  $lang["DisallowedCommands"]     = "Disallowed commands";
  $lang["SaveGroup"]              = "Save Group";
  
+ $lang["BackToTop"]              = "Back to top";
+ $lang["AddAdmin"]               = "Add Admin";
+ $lang["SteamProfileURL"]        = "Steam Profile URL";
+ $lang["GetSteamData"]           = "Get Steam Data";
+ $lang["Name"]                   = "Name";
+ $lang["AvatarImage"]            = "Avatar Image";
+ 
+ $lang["ErrorOccured"]           = "An error occured. Please check all fields.";
+ $lang["UserAdded"]              = "User Successfully Added.";
+ 
  $lang["FieldNotCompleted"]      = "You have not completed all the required fields.";
  $lang["ServerName"]             = "Server Name";
  $lang["IPAddress"]              = "IP Address:PORT";
@@ -114,5 +124,7 @@
  $lang["kick"]                   = "kick";
  
  $lang["BanRemoved"]             = "Ban successfully removed";
+ 
+ $lang["BackToTop"]              = "Back to top";
  
 ?>

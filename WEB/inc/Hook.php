@@ -105,6 +105,10 @@ function OPENSTEAM_SUBSCRIBE() {
 }
 
 function OPENSTEAM_META() {
-  execute_action("os_add_meta");
+  execute_action("OPENSTEAM_META");
+}
+
+function OPENSTEAM_AFTER_FOOTER() {
+  execute_action("OPENSTEAM_AFTER_FOOTER");
 }
 ?>
