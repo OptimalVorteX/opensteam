@@ -48,10 +48,10 @@ hook.Add("Initialize", "LoadGeoIPDatabase", function()
 		Msg("[GeoIP] Loading GeoIP Database..")
 		geolist = {}
 
-		local geo = file.Read("geoip.txt")
+		local geo = file.Read("GeoIPCountryWhois.csv")
 		
 		if geo == nil then
-			print("[GeoIP] ERROR: geoip.txt not found!")
+			print("[GeoIP] ERROR: GeoIPCountryWhois.csv not found!")
 			GEOIP.NoTxt = true
 			return
 		end
