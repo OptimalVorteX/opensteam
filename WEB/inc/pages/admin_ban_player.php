@@ -76,8 +76,15 @@
 		    header("location: ".OSS_HOME."?option=admin_ban_player&error=".$error);
 		    die();
 		 }
+		 //Get PlayerIP
+		 $sth = $db->prepare( "SELECT * FROM ".OSSDB_PLAYERS." WHERE `steam`=:steam LIMIT 1" );
+		 $sth->bindValue(':steam', $steam, PDO::PARAM_STR); 
+		 $result = $sth->execute();
+	
+		 $row = $sth->fetch(PDO::FETCH_ASSOC);
+		 $ip = $row["user_ip"];
 		 
-		 $sth = $db->prepare("INSERT INTO `".OSSDB_BANS."`(`steam`, `name`, `admin`, `reason`, `bantime`, `expire`) VALUES('".$steam."', '".$playerName."', '".$_SESSION["name"]."', '".$reason."', '".date("Y-m-d H:i:s")."', '".$expire."' )");
+		 $sth = $db->prepare("INSERT INTO `".OSSDB_BANS."`(`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES('".$steam."', '".$playerName."', '".$_SESSION["name"]."', '".$reason."', '".date("Y-m-d H:i:s")."', '".$expire."', '".$ip."' )");
 		 $result = $sth->execute();
 		 
 		 header("location: ".OSS_HOME."?option=admin_ban_player&success");
