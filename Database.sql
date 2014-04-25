@@ -3,13 +3,15 @@ CREATE TABLE IF NOT EXISTS `ph_bans` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `steam` varchar(30) NOT NULL,
   `name` text NOT NULL,
+  `ip` varchar(20) NOT NULL,
   `admin` varchar(50) NOT NULL,
   `reason` varchar(255) NOT NULL,
   `bantime` datetime NOT NULL,
   `expire` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `steam` (`steam`),
-  KEY `expires` (`expire`)
+  KEY `expires` (`expire`),
+  KEY `ip` (`ip`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

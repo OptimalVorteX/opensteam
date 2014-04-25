@@ -157,12 +157,35 @@ local function ConnectDB()
 	end
 end
 
+hook.Add("PlayerConnect", "PlayerIPBanCheck", function(name, address)
+   local player_ip = string.sub(address,1,string.find(address,":") - 1)
+   local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `ip` LIKE ('"..player_ip.."%') AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00' ) ;")
+	queryQ.onData = function(Q,D)
+		queryQ.onSuccess = function(q)
+		    local reason = tostring(D.reason)
+			local expires = tostring(D.expire)
+			local ip = tostring(D.ip);
+			if (expires == "0000-00-00 00:00:00" ) then expires = '[permanent]' end
+			RunConsoleCommand( "kick", name )
+			Msg("Kicking "..name.." [BANNED] IP: "..ip.."\n")
+			load = true
+		end
+	end
+	queryQ.onError = function(Q,E) print("'CheckUserBan' threw an error:") print(E) end
+	queryQ:start()
+end)
+
 local function CheckUserBan( ply, stid, unid )
 	local load = false
+	local player_ip = string.sub(ply:IPAddress(),1,string.find(ply:IPAddress(),":") - 1)
 	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `steam`='"..ply:SteamID().."' AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00') ;")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
-			RunConsoleCommand( "kick", ply:GetName() )
+		    local reason = tostring(D.reason)
+			local expires = tostring(D.expire)
+			if (expires == "0000-00-00 00:00:00" ) then expires = '[permanent]' end
+			--RunConsoleCommand( "kick", ply:GetName() )
+			ply:Kick( "You have been banned! Reason: "..reason.." Expire: " ..expires.."" )
 			Msg("Kicking "..ply:Name().." ("..stid.." - "..unid..") [BANNED]\n")
 			load = true
 		end
@@ -181,7 +204,7 @@ local function GetPlayerFromDB(player)
 	local userInfo = ULib.ucl.authed[ player:UniqueID() ]
 	local id = ULib.ucl.getUserRegisteredID( player )
 	if not id then id = player:SteamID() end
-	local user_ip = player:IPAddress()
+	local user_ip = string.sub(player:IPAddress(),1,string.find(player:IPAddress(),":") - 1)
 	
 	player_name = tostring( player:GetName() )
 	id = id:upper()
@@ -255,6 +278,7 @@ function ulx.banuser( calling_ply, id, banTime, banReason )
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 		player_name = D.playerName
+		player_ip   = D.user_ip
 	    --DBBanUser( tostring(calling_ply:GetName() ), id, player_name, banTime)
 		
 		InfoDate = tostring( os.date("%Y-%m-%d %H:%M:%S") )
@@ -279,7 +303,7 @@ function ulx.banuser( calling_ply, id, banTime, banReason )
 		end
 		
         Msg(""..id.." "..player_name.." banned by ["..admin.."]\n")
-		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`) VALUES ('"..id.."', '"..player_name.."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..admin.."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."' ")
+		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES ('"..id.."', '"..player_name.."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."', '"..player_ip.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..admin.."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."', `ip` = '"..player_ip.."' ")
 		
 		InsertQ.onError = function(Q,E) print("'banuser' threw an error:") print(E) end
 		InsertQ:start()
@@ -392,6 +416,16 @@ function ulx.checkban(calling_ply, target)
 
 end
 
+function ulx.showplayers(calling_ply)
+    local allplayers = player.GetAll( )
+	for _, pl in pairs( allplayers ) do
+	   Msg( tostring( pl:GetName() ).." \n")
+	   id = pl:EntIndex()
+	   ULib.console( calling_ply, ""..tostring(id)..". "..tostring( pl:GetName() ).." ("..pl:SteamID()..")" )
+	end
+
+end
+
 local banuser = ulx.command( "User Management", "ulx banuser", ulx.banuser )
 banuser:addParam{ type=ULib.cmds.StringArg, hint="SteamID" }
 banuser:addParam{ type=ULib.cmds.NumArg, hint="Ban time (in minutes) (optional)", ULib.cmds.optional }
@@ -423,5 +457,9 @@ local checkban = ulx.command( "User Management", "ulx checkban", ulx.checkban )
 checkban:addParam{ type=ULib.cmds.StringArg, hint="Player Name" }
 checkban:defaultAccess( ULib.ACCESS_SUPERADMIN )
 checkban:help( "Check if user is banned." )
+
+local showplayers = ulx.command( "User Management", "ulx showplayers", ulx.showplayers )
+showplayers:defaultAccess( ULib.ACCESS_SUPERADMIN )
+showplayers:help( "Player list." )
 
 ConnectDB()
