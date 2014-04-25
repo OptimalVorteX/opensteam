@@ -19,6 +19,6 @@
 	</div>
     <?php } ?>
      <input type="hidden" name="country[]" />
-	<input type="submit" value="<?=$lang["SaveBan"]?>" name="country_bans" class="btn btn-primary" />
+	<input type="submit" value="<?=$lang["SaveCountryBans"]?>" name="country_bans" class="btn btn-primary" />
 	</form>
 </div>
