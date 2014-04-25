@@ -53,6 +53,8 @@
  $lang["UserGroup"]              = "User Group";
  $lang["BanPlayer"]              = "Ban Player";
  $lang["BanReason"]              = "Ban Reason";
+ $lang["BanPlayerIP"]            = "Ban Player or IP";
+ $lang["BanPlayerIPMenu"]        = "Ban Player/IP";
  $lang["Reason"]                 = "Reason";
  $lang["Submit"]                 = "Submit";
  
@@ -106,6 +108,7 @@
  
  $lang["ErrorOccured"]           = "An error occured. Please check all fields.";
  $lang["UserAdded"]              = "User Successfully Added.";
+ $lang["BanAdded"]               = "User Successfully Banned.";
  
  $lang["FieldNotCompleted"]      = "You have not completed all the required fields.";
  $lang["ServerName"]             = "Server Name";
