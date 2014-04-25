@@ -8,6 +8,7 @@ ulx votemap
 ulx who
 ulx armor
 ulx ban
+ulx banindex
 ulx blind
 ulx bring
 ulx chattime

@@ -267,8 +267,8 @@ hook.Add("ULibCommandCalled", "BanRemoveUserFromDatabase", function(player, cmd,
 end)
 
 function ulx.banuser( calling_ply, id, banTime, banReason )
-	id = id:upper()
-	player_name = id
+	local id = id:upper()
+	local player_name = id
 	
 	 	if not ULib.isValidSteamID( id ) then -- Assume steamid and check
 			ULib.tsayError( calling_ply, "Invalid SteamID.", true )
@@ -277,30 +277,25 @@ function ulx.banuser( calling_ply, id, banTime, banReason )
 	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `steam`='"..id.."';")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
-		player_name = D.playerName
-		player_ip   = D.user_ip
+		local player_name = D.playerName
+		local player_ip   = D.user_ip
 	    --DBBanUser( tostring(calling_ply:GetName() ), id, player_name, banTime)
 		
-		InfoDate = tostring( os.date("%Y-%m-%d %H:%M:%S") )
-		
-		Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
-        
+		local InfoDate = tostring( os.date("%Y-%m-%d %H:%M:%S") )
+		local Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
 		banReason = tostring(banReason)
-		
-		if banTime<=0 && ALLOW_PERM_BANS == 1 then
-		  Expire = tostring( '0000-00-00 00:00:00' )
-		end
-		
-		if banTime<=0 && ALLOW_PERM_BANS == 0 then
-		  banTime = BAN_TIME
-		  Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
-		end
-		
-		if not IsValid(calling_ply) then
-		  admin = "console" 
-		else
-		  admin = tostring( calling_ply:GetName() )
-		end
+		  if banTime<=0 && ALLOW_PERM_BANS == 1 then
+		    Expire = tostring( '0000-00-00 00:00:00' )
+		  end
+		  if banTime<=0 && ALLOW_PERM_BANS == 0 then
+		    banTime = BAN_TIME
+		    Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
+		  end
+		  if not IsValid(calling_ply) then
+		    local admin = "console" 
+		  else
+		    local admin = tostring( calling_ply:GetName() )
+		  end
 		
         Msg(""..id.." "..player_name.." banned by ["..admin.."]\n")
 		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES ('"..id.."', '"..player_name.."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."', '"..player_ip.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..admin.."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."', `ip` = '"..player_ip.."' ")
@@ -426,6 +421,49 @@ function ulx.showplayers(calling_ply)
 
 end
 
+function ulx.banindex(calling_ply, index, banTime, banReason)
+    local allplayers = player.GetAll( )
+	for _, pl in pairs( allplayers ) do
+	   --Msg( tostring( pl:GetName() ).." \n")
+	   local id = pl:EntIndex()
+	   local allindex = string.Explode(",", index)
+	   local total = table.Count(allindex)
+	   
+	   local InfoDate = tostring( os.date("%Y-%m-%d %H:%M:%S") )
+	   local Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
+	   local banReason = tostring(banReason)
+	   
+	   if banTime<=0 && ALLOW_PERM_BANS == 1 then
+		    Expire = tostring( '0000-00-00 00:00:00' )
+	   end
+	   
+	   if banTime<=0 && ALLOW_PERM_BANS == 0 then
+		    banTime = BAN_TIME
+		    Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
+	   end
+	   
+	  if not IsValid(calling_ply) then admin = "console" else admin = tostring( calling_ply:GetName() ) end
+	   
+	   for i=1, total do
+		  local CurrentIndex = tonumber( allindex[i] )
+	      if tonumber(id) == tonumber(allindex[i]) then
+		  Msg( ""..i.." = "..tostring(CurrentIndex).." "..tostring( pl:GetName() ).." "..Expire.." min. "..banReason.."  \n")
+		  
+		  local user_ip = string.sub(pl:IPAddress(),1,string.find(pl:IPAddress(),":") - 1)
+		  local player_name = pl:GetName()
+		  local steam = pl:SteamID()
+		  local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES ('"..steam.."', '"..player_name.."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."', '"..user_ip.."') ON DUPLICATE KEY UPDATE `steam` = '"..steam.."', `name` = '"..player_name.."', `admin` = '"..admin.."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."', `ip` = '"..user_ip.."' ")
+		
+		  InsertQ.onError = function(Q,E) print("'banindex' threw an error:") print(E) end
+		  InsertQ:start()
+		
+          pl:Kick( "You have been banned! Reason: "..banReason.." Expire: " ..Expire.."" )
+		  end
+	   end
+	   
+	end
+end
+
 local banuser = ulx.command( "User Management", "ulx banuser", ulx.banuser )
 banuser:addParam{ type=ULib.cmds.StringArg, hint="SteamID" }
 banuser:addParam{ type=ULib.cmds.NumArg, hint="Ban time (in minutes) (optional)", ULib.cmds.optional }
@@ -461,5 +499,12 @@ checkban:help( "Check if user is banned." )
 local showplayers = ulx.command( "User Management", "ulx showplayers", ulx.showplayers )
 showplayers:defaultAccess( ULib.ACCESS_SUPERADMIN )
 showplayers:help( "Player list." )
+
+local banindex = ulx.command( "User Management", "ulx banindex", ulx.banindex )
+banindex:addParam{ type=ULib.cmds.StringArg, hint="Player index separated by comma" }
+banindex:addParam{ type=ULib.cmds.NumArg, hint="Ban time (in minutes) (optional)", ULib.cmds.optional }
+banindex:addParam{ type=ULib.cmds.StringArg, hint="Ban Reason (optional)", ULib.cmds.optional }
+banindex:defaultAccess( ULib.ACCESS_SUPERADMIN )
+banindex:help( "Ban more players using entity index (ulx showplayers)." )
 
 ConnectDB()
