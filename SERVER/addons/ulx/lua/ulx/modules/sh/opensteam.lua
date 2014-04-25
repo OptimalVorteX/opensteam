@@ -251,7 +251,6 @@ function ulx.banuser( calling_ply, id, banTime, banReason )
 			ULib.tsayError( calling_ply, "Invalid SteamID.", true )
 			return false
 		end
-
 	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `steam`='"..id.."';")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
@@ -272,8 +271,15 @@ function ulx.banuser( calling_ply, id, banTime, banReason )
 		  banTime = BAN_TIME
 		  Expire = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time()+(banTime*60) ) )
 		end
-
-		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`) VALUES ('"..id.."', '"..player_name.."', '"..calling_ply:GetName().."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..calling_ply:GetName().."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."' ")
+		
+		if not IsValid(calling_ply) then
+		  admin = "console" 
+		else
+		  admin = tostring( calling_ply:GetName() )
+		end
+		
+        Msg(""..id.." "..player_name.." banned by ["..admin.."]\n")
+		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`) VALUES ('"..id.."', '"..player_name.."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..admin.."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."' ")
 		
 		InsertQ.onError = function(Q,E) print("'banuser' threw an error:") print(E) end
 		InsertQ:start()
