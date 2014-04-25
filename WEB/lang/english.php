@@ -20,6 +20,12 @@
  $lang["Login"]                  = "Login";
  $lang["Register"]               = "Register";
  
+ $lang["Next"]                   = "Next";
+ $lang["Previous"]               = "Previous";
+ $lang["Page"]                   = "Page";
+ $lang["of"]                     = "of";
+ $lang["total"]                  = "total";
+ 
  $lang["Search"]                 = "Search";
  $lang["SearchPlayer"]           = "Search Player";
  

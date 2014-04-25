@@ -64,7 +64,7 @@ if ($draw_pagination == 1 AND $totalpages>=2) { ?>
               if ($currentpage > 1) {
                   ?><li><a class="button orange" href="<?=OSS_HOME?><?=$prefix?>"><span>&laquo;</span></a></li><?php
                   $prevpage = $currentpage - 1;
-                  ?><li><a class="button orange" href="<?=OSS_HOME?><?=$prefix?><?=$strana?><?=$prevpage?><?=$end?>"><span>Previous</span></a></li><?php
+                  ?><li><a class="button orange" href="<?=OSS_HOME?><?=$prefix?><?=$strana?><?=$prevpage?><?=$end?>"><span><?=$lang["Previous"]?></span></a></li><?php
               }
               for ($x = ($currentpage - $range); $x < (($currentpage + $range) + 1); $x++) {
                   if (($x > 0) && ($x <= $totalpages)) {
@@ -80,16 +80,16 @@ if ($draw_pagination == 1 AND $totalpages>=2) { ?>
               if ($currentpage != $totalpages) {
                   $nextpage = $currentpage + 1;
                  ?>
-				 <li><a class="button orange" href="<?=OSS_HOME?><?=$prefix?><?=$strana?><?=$nextpage?><?=$end?>"><span>Next</span></a></li>
+				 <li><a class="button orange" href="<?=OSS_HOME?><?=$prefix?><?=$strana?><?=$nextpage?><?=$end?>"><span><?=$lang["Next"]?></span></a></li>
 				 
 				 <li><a class="button orange" href="<?=OSS_HOME?><?=$prefix?><?=$strana?><?=$totalpages?><?=$end?>"><span><?=$totalpages?></span></a></li><?php
               }
              ?>   
 			<?php if (isset($SHOW_TOTALS) ) { ?>
 			 &nbsp;
-			 <li>Page <b><?=$current_page?></b></li> 
-			 <li>of <?=number_format($totalpages)?></li>
-			 <li>(<?=number_format($numrows)?> total)</li>
+			 <li><?=$lang["Page"]?> <b><?=$current_page?></b></li> 
+			 <li><?=$lang["of"]?> <?=number_format($totalpages)?></li>
+			 <li>(<?=number_format($numrows)?> <?=$lang["total"]?>)</li>
 			 
 			 <?php } ?>
 	  </ul>
