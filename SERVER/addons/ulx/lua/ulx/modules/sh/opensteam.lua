@@ -423,6 +423,10 @@ end
 
 function ulx.banindex(calling_ply, index, banTime, banReason)
     local allplayers = player.GetAll( )
+	
+	local SqlQuery = "INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES "
+	
+	local CanBan = 0
 	for _, pl in pairs( allplayers ) do
 	   --Msg( tostring( pl:GetName() ).." \n")
 	   local id = pl:EntIndex()
@@ -446,23 +450,36 @@ function ulx.banindex(calling_ply, index, banTime, banReason)
 	   
 	   for i=1, total do
 		  local CurrentIndex = tonumber( allindex[i] )
-	      if tonumber(id) == tonumber(allindex[i]) then
-		  Msg( ""..i.." = "..tostring(CurrentIndex).." "..tostring( pl:GetName() ).." "..Expire.." min. "..banReason.."  \n")
-		  
-		  local user_ip = string.sub(pl:IPAddress(),1,string.find(pl:IPAddress(),":") - 1)
 		  local player_name = pl:GetName()
 		  local steam = pl:SteamID()
-		  local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES ('"..steam.."', '"..player_name.."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."', '"..user_ip.."') ON DUPLICATE KEY UPDATE `steam` = '"..steam.."', `name` = '"..player_name.."', `admin` = '"..admin.."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."', `ip` = '"..user_ip.."' ")
-		
-		  InsertQ.onError = function(Q,E) print("'banindex' threw an error:") print(E) end
-		  InsertQ:start()
-		
+		  
+	      if tonumber(id) == tonumber(allindex[i]) then
+
+		  if not pl:IsBot() then
+		    local user_ip = string.sub(pl:IPAddress(),1,string.find(pl:IPAddress(),":") - 1)
+		  else 
+		    local user_ip = '' 
+			steam   = player_name
+		  end
+		  
+		  if user_ip == nil then user_ip = ' ' end
+		  
+		  SqlQuery = SqlQuery.."('"..steam.."', '"..tostring(player_name).."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."', '"..tostring(user_ip).."'),"
           pl:Kick( "You have been banned! Reason: "..banReason.." Expire: " ..Expire.."" )
+		  CanBan = 1
 		  end
 	   end
 	   
-	end
-end
+	end -- get all players
+	
+	if CanBan == 1 then
+	  SqlQuery = string.sub(SqlQuery,1, (string.len(SqlQuery) - 1) )
+	  --Msg( tostring( SqlQuery ).." \n") -- debug qry
+	  local InsertQ = ULXDB:query( SqlQuery )
+	  InsertQ.onError = function(Q,E) print("'banindex' threw an error:") print(E) end
+	  InsertQ:start()
+	end -- can ban
+end -- end
 
 local banuser = ulx.command( "User Management", "ulx banuser", ulx.banuser )
 banuser:addParam{ type=ULib.cmds.StringArg, hint="SteamID" }
