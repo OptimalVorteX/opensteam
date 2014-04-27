@@ -20,7 +20,7 @@ if ( !isset($_GET["option"]) ) {
 }
 
 if (isset($_GET["u"]) AND is_numeric($_GET["u"]) ) $prefix.="&amp;u=".(int)($_GET["u"]);
-if (isset($_GET["search"]) ) $prefix.="&amp;search=".strip_tags($_GET["search"]);
+if (isset($_GET["search"]) ) { $prefix.="?search=".strip_tags($_GET["search"]); $strana = "&amp;page="; }
 if (isset($_GET["sort"]) )   { $prefix.="?sort=".trim($_GET["sort"]); $strana = "&amp;page="; }
 
               $rowsperpage = $result_per_page;
