@@ -6,7 +6,7 @@
  
  
  $Login = SteamSignIn::genUrl( OSS_HOME.'?option=login' );
- $Validate = SteamSignIn::validate();
+ if(isset($_GET["openid_ns"])) $Validate = SteamSignIn::validate();
  
  if ( empty($Validate) ) {
  
