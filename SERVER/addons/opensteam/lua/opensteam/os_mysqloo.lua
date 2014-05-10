@@ -1,29 +1,14 @@
 if not ULib then Msg( "\n ** ULX MySQL REQUIRES ULib v2.4+ .. Aborting\n\n") return end
-if not SERVER then return end
 
-require("mysqloo")
+local MySQLOO = require( 'mysqloo' )
+require( 'mysqloo' )
 
 Msg( "**Loading OpenSteam Setup**\n")
- 
-local ULX_HOST = "127.0.0.1"
-local ULX_PORT = 3306
-local ULX_DATABASE = "prop_hunt"
-local ULX_USERNAME = "root"
-local ULX_PASSWORD = "password"
-local ULX_BANS_TABLE    = "ph_bans"
-local ULX_PLAYERS_TABLE = "ph_users"
-local ULX_GROUPS_TABLE  = "ph_groups"
-local ULX_CONFIG_TABLE  = "ph_config"
-local ULXDB
 
-local BAN_TIME = 7200
-local ALLOW_PERM_BANS = 1
+include('os_config.lua')
 
-GEOIP = GEOIP or {}
-GEOIP.NoTxt = false
-GEOIP.BannedCountries = {}
-GEOIP.PlayerIP = {}
-GEOIP.EnableGeoIP = 1
+print('----------' .. ULX_HOST .. '---------')
+ULXDB = mysqloo.connect(ULX_HOST, ULX_USERNAME, ULX_PASSWORD, ULX_DATABASE, ULX_PORT)
 
 if ( GEOIP.EnableGeoIP == 1 ) then 
 hook.Add("Initialize", "LoadBannedCountries", function()
@@ -523,5 +508,13 @@ banindex:addParam{ type=ULib.cmds.NumArg, hint="Ban time (in minutes) (optional)
 banindex:addParam{ type=ULib.cmds.StringArg, hint="Ban Reason (optional)", ULib.cmds.optional }
 banindex:defaultAccess( ULib.ACCESS_SUPERADMIN )
 banindex:help( "Ban more players using entity index (ulx showplayers)." )
+
+function ConnectDB()
+	print('[ULX OS] - Connecting to Database!')
+
+	ULXDB.onConnected = afterConnected
+	ULXDB.onConnectionFailed = function(db, msg) print("[ULX OS] connectToDatabase") print(msg) end
+	ULXDB:connect()
+end
 
 ConnectDB()
