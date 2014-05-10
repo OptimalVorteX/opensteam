@@ -310,4 +310,16 @@ function OSS_CountryFlag( $letter = "", $country = "", $w = '24' ) {
   <?php
   }
 }
+
+foreach($_POST as $key => $value) {
+    $_POST[$key] = FilterData($value);
+}
+
+foreach($_GET as $key => $value) {
+    $_GET[$key] = FilterData($value);
+}
+
+if ($_SESSION) foreach($_SESSION as $key => $value) {
+    $_SESSION[$key] = FilterData($value);
+}
 ?>

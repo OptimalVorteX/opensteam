@@ -2,16 +2,7 @@
 
 <?php /* 
 <!-- // PLACE YOUR BANNER HERE
-
-You can use the following code to cache images : 
-<?=OSS_HOME?>inc/getImg.php?img=HTTP://LINK_TO_IMAGE.png
-
-Example:
-<a href="http://www.gametracker.com/server_info/212.224.126.68:27035/" target="_blank"><img src="<?=OSS_HOME?>inc/getImg.php?img=http://cache.www.gametracker.com/server_info/212.224.126.68:27035/b_560_95_1.png" border="0" width="460" height="80" alt=""></a>
-<a href="http://www.gametracker.com/server_info/212.224.126.68:27036/" target="_blank"><img src="<?=OSS_HOME?>inc/getImg.php?img=http://cache.www.gametracker.com/server_info/212.224.126.68:27036/b_560_95_1.png" border="0" width="460" height="80" alt=""></a>
-
--->
-<?php */ ?>
+*/ ?>
 
 <table class="table table-striped table-hover ">
    <thead>
