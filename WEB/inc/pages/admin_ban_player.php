@@ -84,7 +84,16 @@
 		 $row = $sth->fetch(PDO::FETCH_ASSOC);
 		 $ip = $row["user_ip"];
 		 
-		 $sth = $db->prepare("INSERT INTO `".OSSDB_BANS."`(`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES('".$steam."', '".$playerName."', '".$_SESSION["name"]."', '".$reason."', '".date("Y-m-d H:i:s")."', '".$expire."', '".$ip."' )");
+		 $sth = $db->prepare("INSERT INTO `".OSSDB_BANS."`(`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES(:steam, :playerName, :admin, :reason, :datetime, :expire, :ip )");
+		 
+		 $sth->bindValue(':steamID',        $steam,              PDO::PARAM_STR); 
+		 $sth->bindValue(':playerName',     $playerName,         PDO::PARAM_STR); 
+		 $sth->bindValue(':admin',          $_SESSION["name"],   PDO::PARAM_STR); 
+		 $sth->bindValue(':reason',         $reason,             PDO::PARAM_STR); 
+		 $sth->bindValue(':datetime',       date("Y-m-d H:i:s"), PDO::PARAM_STR); 
+		 $sth->bindValue(':expire',         $expire,             PDO::PARAM_STR); 
+		 $sth->bindValue(':ip',             $ip,                 PDO::PARAM_STR); 
+		 
 		 $result = $sth->execute();
 		 
 		 header("location: ".OSS_HOME."?option=admin_ban_player&success");

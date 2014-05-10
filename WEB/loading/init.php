@@ -113,23 +113,42 @@ $UserIP = "'.$UserIP.'";
   $r = $sth->fetch(PDO::FETCH_NUM);
   $numrows = $r[0];
 
-  if($numrows<=0) { 
-    $sth = $db->prepare("INSERT INTO `".OSSDB_PLAYERS."`(steamID, steam, avatar, avatar_medium, location, playerName, last_connection, connections, user_ip) VALUES('".$steamid."', '".ConvertToSteam32($steamid)."', '".$Avatar."', '".$avatarMedium."', '".$location."', '".$realname."', '".date("Y-m-d H:i:s", time())."', '1', '".$UserIP."' )");
+  if($numrows<=0) {
+   $sth = $db->prepare("INSERT INTO `".OSSDB_PLAYERS."`(steamID, steam, avatar, avatar_medium, location, playerName, last_connection, connections, user_ip) VALUES(:steamid, :steam, :Avatar, :avatarMedium, :location, :realname, :last_connection, '1', :user_ip )");
+   
+    $sth->bindValue(':steamid',          $steamid,                   PDO::PARAM_STR); 
+	$sth->bindValue(':steam',            ConvertToSteam32($steamid), PDO::PARAM_STR); 
+	$sth->bindValue(':Avatar',           $Avatar,                    PDO::PARAM_STR); 
+	$sth->bindValue(':avatarMedium',     $avatarMedium,              PDO::PARAM_STR); 
+	$sth->bindValue(':location',         $location,                  PDO::PARAM_STR); 
+	$sth->bindValue(':realname',         $realname,                  PDO::PARAM_STR); 
+	$sth->bindValue(':last_connection',  date("Y-m-d H:i:s", time()),PDO::PARAM_STR); 
+	$sth->bindValue(':user_ip',          $UserIP,                    PDO::PARAM_STR); 
+	
     $result = $sth->execute();
   } else {
   
   
     $upd = $db->prepare("UPDATE `".OSSDB_PLAYERS."` SET 
-	avatar='".$Avatar."', 
-	avatar_medium = '".$avatarMedium."', 
-	playerName='".$realname."', 
-	last_connection='".date("Y-m-d H:i:s", time())."', 
+	avatar= :Avatar, 
+	avatar_medium = :avatarMedium, 
+	playerName= :realname, 
+	last_connection= :last_connection, 
 	connections=connections+1, 
-	location = '".$location."', 
-	steam='".trim(ConvertToSteam32($steamid))."',
-	user_ip = '".$UserIP."'
-	WHERE steamID = '".$steamid."' AND last_connection<=NOW() - INTERVAL ".$cfg["cache_time"]." MINUTE  ");
+	location = :location, 
+	steam= :steam,
+	user_ip = :user_ip
+	WHERE steamID = :steamID AND last_connection<=NOW() - INTERVAL ".$cfg["cache_time"]." MINUTE  ");
 	
+	$upd->bindValue(':Avatar',          $Avatar, PDO::PARAM_STR); 
+	$upd->bindValue(':avatarMedium',    $avatarMedium, PDO::PARAM_STR); 
+	$upd->bindValue(':realname',        $realname, PDO::PARAM_STR); 
+	$upd->bindValue(':last_connection', date("Y-m-d H:i:s", time()), PDO::PARAM_STR); 
+	$upd->bindValue(':location',        $location, PDO::PARAM_STR); 
+	$upd->bindValue(':steam',           trim(ConvertToSteam32($steamid)), PDO::PARAM_STR); 
+    $upd->bindValue(':user_ip',         $UserIP, PDO::PARAM_STR); 
+	$upd->bindValue(':steamID',         $steamid, PDO::PARAM_STR);
+
     $result = $upd->execute();
     
   }

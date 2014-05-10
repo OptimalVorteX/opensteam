@@ -71,7 +71,19 @@
 		    die();
 		 }
 		 
-		 $sth = $db->prepare("INSERT INTO `".OSSDB_PLAYERS."`(`steamID`, `steam`, `avatar`, `avatar_medium`, `location`, `playerName`, `rank`, `last_connection`) VALUES('".$steamID."', '".$steam."', '".$avatar."', '".$avatarMed."', '".$location."', '".$playerName."', '".$group."', '".date("Y-m-d H:i:s")."' )");
+		 
+		 
+		 $sth = $db->prepare("INSERT INTO `".OSSDB_PLAYERS."`(`steamID`, `steam`, `avatar`, `avatar_medium`, `location`, `playerName`, `rank`, `last_connection`) VALUES(:steamID, :steam, :avatar, :avatarMed, :location, :playerName, :group, :date )");
+		 
+		 $sth->bindValue(':steamID',        $steamID,                 PDO::PARAM_STR); 
+		 $sth->bindValue(':steam',          $steam,                   PDO::PARAM_STR); 
+		 $sth->bindValue(':avatar',         $avatar,                  PDO::PARAM_STR); 
+		 $sth->bindValue(':avatarMed',      $avatarMed,               PDO::PARAM_STR); 
+		 $sth->bindValue(':location',       $location,                PDO::PARAM_STR); 
+		 $sth->bindValue(':playerName',     $playerName,              PDO::PARAM_STR); 
+		 $sth->bindValue(':group',          $group,                   PDO::PARAM_STR); 
+		 $sth->bindValue(':date',           date("Y-m-d H:i:s"),      PDO::PARAM_STR); 
+		 
 		 $result = $sth->execute();
 		 
 		 header("location: ".OSS_HOME."?option=admin_add_admin&success");
