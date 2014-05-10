@@ -75,6 +75,7 @@
 	$realname = $playerName;
 
 	  $content = '<?php
+if (strstr($_SERVER[\'REQUEST_URI\'], basename(__FILE__) ) ) {header(\'HTTP/1.1 404 Not Found\'); die; }
 $Avatar = "'.$Avatar.'";
 $avatarMedium = "'.$avatarMedium.'";
 $location = "'.$location.'";
@@ -108,7 +109,8 @@ $UserIP = "'.$UserIP.'";
      }
   }
   
-  $sth = $db->prepare("SELECT COUNT(*) FROM `".OSSDB_PLAYERS."` WHERE steamID='".$steamid."' LIMIT 1");
+  $sth = $db->prepare("SELECT COUNT(*) FROM `".OSSDB_PLAYERS."` WHERE steamID=:steamid LIMIT 1");
+  $sth->bindValue(':steamid',          $steamid,                   PDO::PARAM_STR);
   $result = $sth->execute();
   $r = $sth->fetch(PDO::FETCH_NUM);
   $numrows = $r[0];

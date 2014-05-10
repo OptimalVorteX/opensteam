@@ -23,10 +23,14 @@
 	
 	  $search = strip_tags( trim($_GET["search"]) );
 	  
-	  $sql.=" AND b.name LIKE ('%".$search."%') ";
+	  $sql.=" AND b.name LIKE :search ";
 	}
 	
+	$sql.=" AND b.expire>NOW() OR b.expire = '0000-00-00 00:00:00' ";
+	
     $sth = $db->prepare("SELECT COUNT(*) FROM ".OSSDB_BANS." as b WHERE b.id>=1 $sql LIMIT 1");
+	if ( isset($_GET["search"]) AND strlen($_GET["search"])>=2 ) 
+	$sth->bindValue(':search',           "%".$search."%",        PDO::PARAM_STR); 
     $result = $sth->execute();
 	
 	 $r = $sth->fetch(PDO::FETCH_NUM);

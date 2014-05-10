@@ -1,17 +1,22 @@
 <?php
-
     $sql = " AND p.playerName != ''";
 
 	if ( isset($_GET["search"]) AND strlen($_GET["search"])>=2 ) {
 	
 	  $search = strip_tags( trim($_GET["search"]) );
-	  
-	  if(is_numeric($search)) $extSql = " OR p.`steamID` = '".$search."' "; else $extSql ="";
-	  
-	  $sql.=" AND (p.playerName LIKE ('%".$search."%') OR p.`steam` LIKE ('%".$search."%') ".$extSql." )";
+	  $sql.=" AND (p.playerName LIKE :str1 OR p.`steam` LIKE :str2 )";
+	  if(is_numeric($search)) $sql.= " OR p.`steamID` = :str3 ";
+	}
+
+    $sth = $db->prepare("SELECT COUNT(*) FROM ".OSSDB_PLAYERS." as p WHERE p.id>=1 ".$sql." LIMIT 1");
+	
+	if ( isset($_GET["search"]) AND strlen($_GET["search"])>=2 ) {
+	$sth->bindValue(':str1',           "%".$search."%",                    PDO::PARAM_STR); 
+	$sth->bindValue(':str2',           "%".$search."%",                    PDO::PARAM_STR); 
+	if(is_numeric($search))
+	$sth->bindValue(':str3',           $search,                    PDO::PARAM_STR); 
 	}
 	
-    $sth = $db->prepare("SELECT COUNT(*) FROM ".OSSDB_PLAYERS." as p WHERE p.id>=1 ".$sql." LIMIT 1");
     $result = $sth->execute();
 
 	 $r = $sth->fetch(PDO::FETCH_NUM);
@@ -38,6 +43,14 @@
 	 WHERE p.id>=1 ".$sql ."
 	 ORDER BY ".$orderby ."
 	 LIMIT ".$offset.", ".$rowsperpage."");
+	 
+	if ( isset($_GET["search"]) AND strlen($_GET["search"])>=2 ) {
+	$sth->bindValue(':str1',           "%".$search."%",                    PDO::PARAM_STR); 
+	$sth->bindValue(':str2',           "%".$search."%",                    PDO::PARAM_STR); 
+	if(is_numeric($search))
+	$sth->bindValue(':str3',           $search,                    PDO::PARAM_STR); 
+	}
+	 
 	 $result = $sth->execute();
 	 
 	 $c=0;

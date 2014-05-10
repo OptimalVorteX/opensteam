@@ -59,10 +59,20 @@
 		  
 		  $datetime = date("Y-m-d H:i:s");
 		  $admin = trim($_SESSION["name"]);
-		 
+		  
 		  $ins = $db->prepare( "INSERT INTO ".OSSDB_BANS."(steam, name, admin, reason, bantime, expire) 
-		  VALUES('".$row["steam"]."', '".$row["playerName"]."', '".$admin."', '".$reason ."', '".$datetime."', '".$expire."' ) ON DUPLICATE KEY UPDATE expire = '".$expire."', admin='".$admin."', `reason`='".$reason."', name = '".$row["playerName"]."' " );
-		   
+		  VALUES(:steam, :playerName, :admin, :reason, :datetime, :expire ) ON DUPLICATE KEY UPDATE expire = :expire2, admin=:admin2, `reason`=:reason2, name = :playerName2 " );
+		  
+		  $ins->bindValue(':steam',          $row["steam"],     PDO::PARAM_STR); 
+		  $ins->bindValue(':playerName',     $row["playerName"],     PDO::PARAM_STR); 
+		  $ins->bindValue(':admin',          $admin,                 PDO::PARAM_STR); 
+		  $ins->bindValue(':reason',         $reason,                PDO::PARAM_STR); 
+		  $ins->bindValue(':datetime',       $datetime,              PDO::PARAM_STR); 
+		  $ins->bindValue(':expire',         $expire,                PDO::PARAM_STR); 
+		  $ins->bindValue(':expire2',        $expire,                PDO::PARAM_STR); 
+		  $ins->bindValue(':admin2',         $admin,                 PDO::PARAM_STR); 
+		  $ins->bindValue(':reason2',        $reason,                PDO::PARAM_STR); 
+		  $ins->bindValue(':playerName2',    $row["playerName"],     PDO::PARAM_STR); 
 		  $result = $ins->execute();
 		  }
 		  

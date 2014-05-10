@@ -9,13 +9,18 @@ if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; }
 	  
 	  $str = "";
 	  foreach( $_POST["country"] as $e=>$v ) {
-		$str.=$e.",";
+		$str.=FilterData($e).",";
 	  }
-	  
+
 	  if(!empty($str)) {
 	    $str = substr($str, 0, strlen($str)-1 );
-	    $sth = $db->prepare("INSERT INTO `".OSSDB_CONFIG."`(`config_name`, `config_value` ) VALUES('country_bans', '".$str."') 
-		ON DUPLICATE KEY UPDATE config_value = '".$str."' ");
+		
+	    $sth = $db->prepare("INSERT INTO `".OSSDB_CONFIG."`(`config_name`, `config_value` ) VALUES('country_bans', :str) 
+		ON DUPLICATE KEY UPDATE config_value = :str2 ");
+		
+		$sth->bindValue(':str',        $str,                 PDO::PARAM_STR);
+		$sth->bindValue(':str2',       $str,                 PDO::PARAM_STR);
+		
 		$result = $sth->execute();
 	  }
 	

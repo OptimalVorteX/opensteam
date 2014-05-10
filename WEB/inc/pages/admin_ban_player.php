@@ -20,15 +20,15 @@
 
      $xml = new SimpleXMLElement($result);
 	 $items = $xml->xpath('*/avatarFull');
-	 $Avatar       = $xml->avatarFull;  
-	 $avatarMedium = $xml->avatarMedium;
-	 $location     = $xml->location;
-	 $realname     = trim($xml->realname);
+	 $Avatar       = FilterData($xml->avatarFull);  
+	 $avatarMedium = FilterData($xml->avatarMedium);
+	 $location     = FilterData($xml->location);
+	 $realname     = FilterData(trim($xml->realname));
 
 	 $xml2 = new SimpleXMLElement($result);
-	 $items = $xml2->xpath('*/steamID');
-	 $playerName   = $xml2->steamID;
-	 $realname = $playerName;
+	 $items        = $xml2->xpath('*/steamID');
+	 $playerName   = FilterData($xml2->steamID);
+	 $realname     = $playerName;
 	 
 	 $xml3 = new SimpleXMLElement($result);
 	 $items = $xml3->xpath('*/profile');
@@ -65,7 +65,8 @@
 		 if(!strstr($steam, "STEAM_")) $error = 2;
 		 if(empty($playerName)) $error = 3;
 		 
-		 $sth = $db->prepare("SELECT COUNT(*) FROM `".OSSDB_BANS."` WHERE `steam`='".$steam."' ");
+		 $sth = $db->prepare("SELECT COUNT(*) FROM `".OSSDB_BANS."` WHERE `steam`=:steam ");
+		 $sth->bindValue(':steam',        $steam,                 PDO::PARAM_STR);
 	     $result = $sth->execute();
 		 $r = $sth->fetch(PDO::FETCH_NUM);
 	     $numrows = $r[0];

@@ -28,13 +28,30 @@
 		}
 		//INSERT/UPDATE
         if(!isset($_GET["edit"])) {
-		$sth = $db->prepare("INSERT INTO `".OSSDB_SERVERS."`(server_name, server_ip, server_port, server_rcon) VALUES('".$server_name."', '".$server_ip."', '".$server_port."', '".$server_rcon."') ON DUPLICATE KEY UPDATE server_name = '".$server_name."', server_ip = '".$server_ip."', server_port='".$server_port."', server_rcon = '".$server_rcon."' ");
+		$sth = $db->prepare("INSERT INTO `".OSSDB_SERVERS."`(server_name, server_ip, server_port, server_rcon) VALUES(:server_name, :server_ip, :server_port, :server_rcon) ON DUPLICATE KEY UPDATE server_name = :server_name2, server_ip = :server_ip2, server_port=:server_port2, server_rcon = :server_rcon2 ");
+		
+		$sth->bindValue(':server_name',         $server_name,                 PDO::PARAM_STR); 
+		$sth->bindValue(':server_ip',           $server_ip,                   PDO::PARAM_STR); 
+		$sth->bindValue(':server_port',         $server_port,                 PDO::PARAM_STR); 
+		$sth->bindValue(':server_rcon',         $server_rcon,                 PDO::PARAM_STR); 
+		$sth->bindValue(':server_name2',        $server_name,                 PDO::PARAM_STR); 
+		$sth->bindValue(':server_ip2',          $server_ip,                   PDO::PARAM_STR); 
+		$sth->bindValue(':server_port2',        $server_port,                 PDO::PARAM_STR); 
+		$sth->bindValue(':server_rcon2',        $server_rcon,                 PDO::PARAM_STR); 
+		
 		$result = $sth->execute();
 		$serverID = $db->lastInsertId(); 
 		} else {
 		$serverID = (int)$_GET["edit"];
-		$sth = $db->prepare("UPDATE `".OSSDB_SERVERS."` SET server_name = '".$server_name."', server_ip = '".$server_ip."', server_port='".$server_port."', server_rcon = '".$server_rcon."' 
-		WHERE `id` = '".$serverID."' ");
+		$sth = $db->prepare("UPDATE `".OSSDB_SERVERS."` SET server_name = :server_name, server_ip = :server_ip, server_port=:server_port, server_rcon = :server_rcon
+		WHERE `id` = :serverID ");
+		
+		$sth->bindValue(':server_name',        $server_name,                 PDO::PARAM_STR); 
+		$sth->bindValue(':server_ip',          $server_ip,                   PDO::PARAM_STR); 
+		$sth->bindValue(':server_port',        $server_port,                 PDO::PARAM_STR); 
+		$sth->bindValue(':server_rcon',        $server_rcon,                 PDO::PARAM_STR); 
+		$sth->bindValue(':serverID',           $serverID,                    PDO::PARAM_STR); 
+		
 		$result = $sth->execute();
 		}
 		
@@ -52,17 +69,22 @@
 	 //GET ALL SERVERS
 	 if( isset($_GET["edit"]) AND is_numeric($_GET["edit"]) ) {
 	   $serverID = (int)$_GET["edit"]; 
-	   $sql.=" AND `id` = '".$serverID."' ";
+	   $sql.=" AND `id` = :serverID ";
 	   $EditServer["button"]     = $lang["EditServer"];
 	 }
 	 
 	 if( isset($_GET["rcon"]) AND is_numeric($_GET["rcon"]) ) {
 	   $serverID = (int)$_GET["rcon"]; 
-	   $sql =" AND `id` = '".$serverID."' ";
+	   $sql =" AND `id` = :serverID ";
 	 }
 	 
 
 	 $sth = $db->prepare("SELECT * FROM `".OSSDB_SERVERS."` WHERE `id`>=1 $sql ORDER BY `id` DESC LIMIT 500");
+	 
+	 if( isset($_GET["edit"]) AND is_numeric($_GET["edit"]) )
+	 $sth->bindValue(':serverID',        $serverID,                 PDO::PARAM_INT); 
+	 if( isset($_GET["rcon"]) AND is_numeric($_GET["rcon"]) )
+	 $sth->bindValue(':serverID',        $serverID,                 PDO::PARAM_INT); 
 	 $result = $sth->execute();
 	 
 	 $ServersData = array();

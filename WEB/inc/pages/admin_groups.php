@@ -39,7 +39,8 @@
 	 $result = $sth->execute();
 	 
 	 if($del!='user' AND $del!='superadmin') {
-	   $upd = $db->prepare("UPDATE ".OSSDB_PLAYERS." SET `rank` = 'user' WHERE `rank` = '".$del."'  ");
+	   $upd = $db->prepare("UPDATE ".OSSDB_PLAYERS." SET `rank` = 'user' WHERE `rank` = :del  ");
+	   $upd->bindValue(':del',        $del,    PDO::PARAM_STR); 
 	   $result = $upd->execute();
 	 }
 	 
@@ -59,7 +60,8 @@
      $NewName = trim(strip_tags($_POST["group"]));
 	 $OldName = trim(strip_tags($_POST["old_group"]));
 	 //Check if group already exists...
-	   $sth = $db->prepare("SELECT * FROM ".OSSDB_GROUPS." WHERE `group`='".$NewName."'");
+	   $sth = $db->prepare("SELECT * FROM ".OSSDB_GROUPS." WHERE `group`=:NewName");
+	   $sth->bindValue(':NewName',        $NewName,    PDO::PARAM_STR); 
 	   $result = $sth->execute();
 
 	   if ( $sth->rowCount()>=1 OR empty($NewName) ) {
@@ -69,10 +71,14 @@
 	 //Do not change superadmin  
 	 if($OldName!="superadmin") {
 	 
-	 $upd = $db->prepare("UPDATE ".OSSDB_PLAYERS." SET `rank` = '".$NewName."' WHERE `rank` = '".$OldName."'  ");
+	 $upd = $db->prepare("UPDATE ".OSSDB_PLAYERS." SET `rank` = :NewName WHERE `rank` = :OldName  ");
+	 $upd->bindValue(':NewName',        $NewName,    PDO::PARAM_STR); 
+	 $upd->bindValue(':OldName',        $OldName,    PDO::PARAM_STR); 
 	 $result = $upd->execute();
 	 
-	 $upd2 = $db->prepare("UPDATE ".OSSDB_GROUPS." SET `group` = '".$NewName."' WHERE `group` = '".$OldName."'  ");
+	 $upd2 = $db->prepare("UPDATE ".OSSDB_GROUPS." SET `group` = :NewName WHERE `group` = :OldName  ");
+	 $upd2->bindValue(':NewName',        $NewName,    PDO::PARAM_STR); 
+	 $upd2->bindValue(':OldName',        $OldName,    PDO::PARAM_STR); 
 	 $result = $upd2->execute();
 	 } else $NewName = "superadmin";
 	 
@@ -84,7 +90,7 @@
 	 if(isset($_GET["edit"]) ) { 
 	 
 	 $GroupName = strtolower(trim( strip_tags( $_GET["edit"] ) ));
-	 $sql.= " AND `group` = '".$GroupName."' ";
+	 $sql.= " AND `group` = :GroupName ";
 	 
 	 }
 	 
@@ -92,6 +98,8 @@
   	 $sth = $db->prepare("SELECT * FROM ".OSSDB_GROUPS." WHERE `group`!='' $sql 
 	 ORDER BY FIELD(`group`, 'superadmin') DESC, `group` ASC
 	 LIMIT 500");
+	 if(isset($_GET["edit"]) AND !empty($GroupName) )
+	 $sth->bindValue(':GroupName',        $GroupName,    PDO::PARAM_STR); 
 	 $result = $sth->execute();
 	 
 	 $GroupsData = array();
@@ -133,7 +141,8 @@
 	 //Check if group already exists, so we won't rewrite it
 	 if(isset($_GET["add"]) ) {
 	   $GroupName = strtolower(trim($_POST["group"]));
-	   $sth = $db->prepare("SELECT * FROM ".OSSDB_GROUPS." WHERE `group`='".$GroupName."'");
+	   $sth = $db->prepare("SELECT * FROM ".OSSDB_GROUPS." WHERE `group`=:GroupName");
+	   $sth->bindValue(':GroupName',        $GroupName,    PDO::PARAM_STR); 
 	   $result = $sth->execute();
 	   
 	   if ( $sth->rowCount()>=1 OR empty($GroupName) ) {
@@ -164,7 +173,13 @@
 			
 		$DissalowedCommands = substr($DissalowedCommands, 0, strlen($DissalowedCommands)-1 );
 		
-		$ins = $db->prepare("INSERT INTO `".OSSDB_GROUPS."` (`group`, `commands`, `denies`) VALUES('".$GroupName."', '".$AllowedCommands."', '".$DissalowedCommands."') ON DUPLICATE KEY UPDATE commands = '".$AllowedCommands."', denies = '".$DissalowedCommands."' ");
+		$ins = $db->prepare("INSERT INTO `".OSSDB_GROUPS."` (`group`, `commands`, `denies`) VALUES(:GroupName, :AllowedCommands, :DissalowedCommands) ON DUPLICATE KEY UPDATE commands = :AllowedCommands2, denies = :DissalowedCommands ");
+		
+		$ins->bindValue(':GroupName',               $GroupName,                 PDO::PARAM_STR); 
+		$ins->bindValue(':AllowedCommands',         $AllowedCommands,           PDO::PARAM_STR); 
+		$ins->bindValue(':DissalowedCommands',      $DissalowedCommands,        PDO::PARAM_STR); 
+		$ins->bindValue(':AllowedCommands2',        $AllowedCommands,           PDO::PARAM_STR); 
+		$ins->bindValue(':DissalowedCommands',      $DissalowedCommands,        PDO::PARAM_STR); 
 			
 		 //$upd = $db->prepare("UPDATE ".OSSDB_GROUPS." SET 
 		 //commands = '".$AllowedCommands."', denies = '".$DissalowedCommands."' WHERE `group` = '".$GroupName."' ");

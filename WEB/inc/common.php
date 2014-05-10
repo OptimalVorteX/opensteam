@@ -38,7 +38,7 @@ function FilterData($data) {
         if ( !is_array($data) ) $data = stripslashes($data);
  
     if ( !is_array($data) ) $data = htmlentities(trim($data));
- 
+    $data = str_replace("../", "", $data);
     return $data;
 }
 

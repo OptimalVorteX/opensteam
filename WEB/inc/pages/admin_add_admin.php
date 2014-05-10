@@ -20,19 +20,19 @@
 
      $xml = new SimpleXMLElement($result);
 	 $items = $xml->xpath('*/avatarFull');
-	 $Avatar       = $xml->avatarFull;  
-	 $avatarMedium = $xml->avatarMedium;
-	 $location     = $xml->location;
-	 $realname     = trim($xml->realname);
+	 $Avatar       = FilterData($xml->avatarFull);  
+	 $avatarMedium = FilterData($xml->avatarMedium);
+	 $location     = FilterData($xml->location);
+	 $realname     = FilterData(trim($xml->realname));
 
 	 $xml2 = new SimpleXMLElement($result);
 	 $items = $xml2->xpath('*/steamID');
-	 $playerName   = $xml2->steamID;
+	 $playerName   = FilterData($xml2->steamID);
 	 $realname = $playerName;
 	 
 	 $xml3 = new SimpleXMLElement($result);
 	 $items = $xml3->xpath('*/profile');
-	 $steam64   = $xml3->steamID64;
+	 $steam64   = FilterData($xml3->steamID64);
 
 	 $Steam = ConvertToSteam32( $steam64 );
 	 echo "$Steam|	|$steam64|	|$realname|	|$Avatar|	|$avatarMedium|	|$location";
