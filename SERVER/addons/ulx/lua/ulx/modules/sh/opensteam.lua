@@ -159,7 +159,7 @@ end
 
 hook.Add("PlayerConnect", "PlayerIPBanCheck", function(name, address)
    local player_ip = string.sub(address,1,string.find(address,":") - 1)
-   local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `ip` LIKE ('"..player_ip.."%') AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00' ) ;")
+   local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `ip` LIKE ('"..ULXDB:escape(player_ip).."%') AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00' ) ;")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 		    local reason = tostring(D.reason)
@@ -178,7 +178,7 @@ end)
 local function CheckUserBan( ply, stid, unid )
 	local load = false
 	local player_ip = string.sub(ply:IPAddress(),1,string.find(ply:IPAddress(),":") - 1)
-	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `steam`='"..ply:SteamID().."' AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00') ;")
+	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `steam`='"..ULXDB:escape(ply:SteamID()).."' AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00') ;")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 		    local reason = tostring(D.reason)
@@ -209,7 +209,7 @@ local function GetPlayerFromDB(player)
 	player_name = tostring( player:GetName() )
 	id = id:upper()
 	
-	local queryQ = ULXDB:query("SELECT p.`playerName`, p.`rank`, a.`group` as user_group, a.commands as user_commands, a.`denies` as disallowed_commands FROM `"..ULX_PLAYERS_TABLE.."` as p LEFT JOIN `"..ULX_GROUPS_TABLE.."` as a ON a.`group` = p.`rank` WHERE p.`steam`='"..player:SteamID().."';")
+	local queryQ = ULXDB:query("SELECT p.`playerName`, p.`rank`, a.`group` as user_group, a.commands as user_commands, a.`denies` as disallowed_commands FROM `"..ULX_PLAYERS_TABLE.."` as p LEFT JOIN `"..ULX_GROUPS_TABLE.."` as a ON a.`group` = p.`rank` WHERE p.`steam`='"..ULXDB:escape(player:SteamID()).."';")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 			Msg("Found "..tostring(D.playerName).." ["..tostring(D.user_group).."] in the database!\n")
@@ -243,7 +243,7 @@ local function GetPlayerFromDB(player)
 		ULib.ucl.addUser( id, allows, denies, "user" )
 		local DateTime = tostring( os.date("%Y-%m-%d %H:%M:%S", os.time() ) )
 		--Msg("Adding "..player_name.." "..id.." [user] in the database!\n")
-		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_PLAYERS_TABLE.."`( `steam`, `playerName`, `rank`, `connections`, `last_connection`, `user_ip` ) VALUES('"..id.."', '"..player_name.."', 'user', '1', '"..DateTime.."', '"..user_ip.."') ON DUPLICATE KEY UPDATE `connections` = connections+1, last_connection = '"..DateTime.."', `playerName` = '"..player_name.."', `user_ip` = '"..user_ip.."' ")
+		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_PLAYERS_TABLE.."`( `steam`, `playerName`, `rank`, `connections`, `last_connection`, `user_ip` ) VALUES('"..ULXDB:escape(id).."', '"..ULXDB:escape(player_name).."', 'user', '1', '"..ULXDB:escape(DateTime).."', '"..ULXDB:escape(user_ip).."') ON DUPLICATE KEY UPDATE `connections` = connections+1, last_connection = '"..ULXDB:escape(DateTime).."', `playerName` = '"..ULXDB:escape(player_name).."', `user_ip` = '"..ULXDB:escape(user_ip).."' ")
 		
 		InsertQ.onError = function(Q,E) print("GetPlayerFromDB threw an error:") print(E) end
 		InsertQ:start()
@@ -274,7 +274,7 @@ function ulx.banuser( calling_ply, id, banTime, banReason )
 			ULib.tsayError( calling_ply, "Invalid SteamID.", true )
 			return false
 		end
-	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `steam`='"..id.."';")
+	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `steam`='"..ULXDB:escape(id).."';")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 		local player_name = D.playerName
@@ -298,7 +298,7 @@ function ulx.banuser( calling_ply, id, banTime, banReason )
 		  end
 		
         Msg(""..id.." "..player_name.." banned by ["..admin.."]\n")
-		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES ('"..id.."', '"..player_name.."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."', '"..player_ip.."') ON DUPLICATE KEY UPDATE `steam` = '"..id.."', `name` = '"..player_name.."', `admin` = '"..admin.."', `bantime` = '"..InfoDate.."', expire = '"..Expire.."', `ip` = '"..player_ip.."' ")
+		local InsertQ = ULXDB:query("INSERT INTO `"..ULX_BANS_TABLE.."` (`steam`, `name`, `admin`, `reason`, `bantime`, `expire`, `ip`) VALUES ('"..ULXDB:escape(id).."', '"..ULXDB:escape(player_name).."', '"..ULXDB:escape(admin).."', '"..ULXDB:escape(banReason).."', '"..ULXDB:escape(InfoDate).."', '"..ULXDB:escape(Expire).."', '"..ULXDB:escape(player_ip).."') ON DUPLICATE KEY UPDATE `steam` = '"..ULXDB:escape(id).."', `name` = '"..ULXDB:escape(player_name).."', `admin` = '"..ULXDB:escape(admin).."', `bantime` = '"..ULXDB:escape(InfoDate).."', expire = '"..ULXDB:escape(Expire).."', `ip` = '"..ULXDB:escape(player_ip).."' ")
 		
 		InsertQ.onError = function(Q,E) print("'banuser' threw an error:") print(E) end
 		InsertQ:start()
@@ -321,7 +321,7 @@ function ulx.removeban( calling_ply, id )
 		return false
 	end
 	
-	local queryQ = ULXDB:query("DELETE FROM `"..ULX_BANS_TABLE.."` WHERE `steam`='"..id.."';")
+	local queryQ = ULXDB:query("DELETE FROM `"..ULX_BANS_TABLE.."` WHERE `steam`='"..ULXDB:escape(id).."';")
 
 	Msg("Removed Ban "..id.." \n")
 	ulx.fancyLogAdmin( calling_ply, "#A removed ban "..tostring(id).." " )
@@ -343,11 +343,11 @@ function ulx.updateuser( calling_ply, id, group )
 			return false
 		end
 
-	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `steam`='"..id.."';")
+	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `steam`='"..ULXDB:escape(id).."';")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 		player_name = D.playerName
-	    local queryUpd = ULXDB:query("UPDATE `"..ULX_PLAYERS_TABLE.."` SET `rank` = '"..tostring(group).."' WHERE `steam`='"..id.."' LIMIT 1;")
+	    local queryUpd = ULXDB:query("UPDATE `"..ULX_PLAYERS_TABLE.."` SET `rank` = '"..ULXDB:escape(tostring(group)).."' WHERE `steam`='"..ULXDB:escape(id).."' LIMIT 1;")
 	    queryUpd.onError = function(Q,E) print("updateuser threw an error:") print(E) end
 	    queryUpd:start()
 	
@@ -367,7 +367,7 @@ end
 
 function ulx.sid(calling_ply, target)
 
-	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `playerName`='"..tostring(target).."';")
+	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_PLAYERS_TABLE.."` WHERE `playerName`='"..ULXDB:escape(tostring(target)).."';")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 		ulx.fancyLogAdmin( calling_ply, "#A".." | "..tostring(D.steam).." ("..tostring(D.playerName)..") ["..tostring(D.rank).."]" )
@@ -398,7 +398,7 @@ end
 
 function ulx.checkban(calling_ply, target)
     
-	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `name`='"..target.."' AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00') ;")
+	local queryQ = ULXDB:query("SELECT * FROM `"..ULX_BANS_TABLE.."` WHERE `name`='"..ULXDB:escape(target).."' AND (`expire`>NOW() OR `expire` = '0000-00-00 00:00:00') ;")
 	queryQ.onData = function(Q,D)
 		queryQ.onSuccess = function(q)
 		    local ExpireDate = D.expire
@@ -464,7 +464,7 @@ function ulx.banindex(calling_ply, index, banTime, banReason)
 		  
 		  if user_ip == nil then user_ip = ' ' end
 		  
-		  SqlQuery = SqlQuery.."('"..steam.."', '"..tostring(player_name).."', '"..admin.."', '"..banReason.."', '"..InfoDate.."', '"..Expire.."', '"..tostring(user_ip).."'),"
+		  SqlQuery = SqlQuery.."('"..ULXDB:escape(steam).."', '"..ULXDB:escape(tostring(player_name)).."', '"..ULXDB:escape(admin).."', '"..ULXDB:escape(banReason).."', '"..ULXDB:escape(InfoDate).."', '"..ULXDB:escape(Expire).."', '"..ULXDB:escape(tostring(user_ip)).."'),"
           pl:Kick( "You have been banned! Reason: "..banReason.." Expire: " ..Expire.."" )
 		  CanBan = 1
 		  end
