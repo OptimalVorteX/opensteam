@@ -7,7 +7,6 @@ Msg( "**Loading OpenSteam Setup**\n")
 
 include('os_config.lua')
 
-print('----------' .. ULX_HOST .. '---------')
 ULXDB = mysqloo.connect(ULX_HOST, ULX_USERNAME, ULX_PASSWORD, ULX_DATABASE, ULX_PORT)
 
 if ( GEOIP.EnableGeoIP == 1 ) then 
