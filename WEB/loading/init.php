@@ -34,8 +34,8 @@
   require_once('../inc/class.db.PDO.php'); 
   require_once('../inc/db_connect.php');
   
-  if(isset($_GET["mapname"])) $mapname = $_GET["mapname"];
-  if(isset($_GET["steamid"])) $steamid = $_GET["steamid"];
+  if(isset($_GET["mapname"])) $mapname = FilterData($_GET["mapname"]);
+  if(isset($_GET["steamid"])) $steamid = FilterData($_GET["steamid"]);
   
   
   $imagesDir = 'bcg/';
@@ -64,14 +64,14 @@
     $result = file_get_contents("http://steamcommunity.com/profiles/".$steamid."/?xml=1");
     $xml = new SimpleXMLElement($result);
 	$items = $xml->xpath('*/avatarFull');
-	$Avatar       = $xml->avatarFull;
-	$avatarMedium = $xml->avatarMedium;
-	$location     = $xml->location;
-	$realname     = trim($xml->realname);
+	$Avatar       = FilterData( addslashes($xml->avatarFull));
+	$avatarMedium = FilterData( addslashes($xml->avatarMedium));
+	$location     = FilterData( addslashes($xml->location));
+	$realname     = FilterData(trim( addslashes($xml->realname)));
 
 	$xml2 = new SimpleXMLElement($result);
 	$items = $xml2->xpath('*/steamID');
-	$playerName   = $xml2->steamID;
+	$playerName   = FilterData( addslashes($xml2->steamID));
 	$realname = $playerName;
 
 	  $content = '<?php
