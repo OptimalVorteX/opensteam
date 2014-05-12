@@ -9,9 +9,8 @@ if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; }
 	  
 	  $str = "";
 	  foreach( $_POST["country"] as $e=>$v ) {
-		if(!is_numeric($e)) $str.=FilterData($e).",";
+		$str.=FilterData($e).",";
 	  }
-
 	  if(!empty($str)) {
 	    $str = substr($str, 0, strlen($str)-1 );
 		
