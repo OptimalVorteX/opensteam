@@ -66,7 +66,7 @@
 	 
 	 $BansData[$c]["id"]       = ($row["id"]);
 	 $BansData[$c]["steam"]    = ($row["steam"]);
-	 $BansData[$c]["name"]     = ($row["name"]);
+	 $BansData[$c]["name"]     = htmlspecialchars_decode($row["name"]);
 	 $BansData[$c]["admin"]    = ($row["admin"]);
 	 $BansData[$c]["reason"]   = ($row["reason"]);
 	 $BansData[$c]["bantime"]  = date(OSS_DATE_FORMAT, strtotime($row["bantime"]) );

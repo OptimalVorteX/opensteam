@@ -52,7 +52,7 @@
 	$PlayerInfo["steamID"] = $row["steamID"];
 	$PlayerInfo["steam"] = $row["steam"];
 	$PlayerInfo["location"] = $row["location"];
-	$PlayerInfo["playerName"] = $row["playerName"];
+	$PlayerInfo["playerName"] = htmlspecialchars_decode($row["playerName"]);
 	$PageTitle = $row["playerName"].' | OpenSteam';
 	$PlayerInfo["avatar"] = $row["avatar"];
 	$PlayerInfo["avatar_medium"] = $row["avatar_medium"];
