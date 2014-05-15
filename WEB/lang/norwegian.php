@@ -113,6 +113,8 @@
  $lang["FieldNotCompleted"]      = "Du har ikke fylt inn alle de obligatoriske feltene.";
  $lang["ServerName"]             = "Servernavn";
  $lang["IPAddress"]              = "IP-adresse:PORT";
+ $lang["ServerPlayers"]          = "Spillere";
+ $lang["ServerMap"]              = "Map";
  $lang["RCONpassword"]           = "RCON-passord";
  $lang["Cancel"]                 = "Avbryt";
  $lang["Server"]                 = "Server";

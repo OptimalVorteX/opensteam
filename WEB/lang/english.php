@@ -113,6 +113,8 @@
  $lang["FieldNotCompleted"]      = "You have not completed all the required fields.";
  $lang["ServerName"]             = "Server Name";
  $lang["IPAddress"]              = "IP Address:PORT";
+ $lang["ServerPlayers"]          = "Players";
+ $lang["ServerMap"]              = "Map";
  $lang["RCONpassword"]           = "RCON password";
  $lang["Cancel"]                 = "Cancel";
  $lang["Server"]                 = "Server";
