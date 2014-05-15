@@ -23,6 +23,7 @@
   $avatarMedium = "";
   $location  = "";
   $realname = "";
+  $uniqueID = "";
   
   $FileCache = 1;
   $DB_INSERT = 1;
@@ -36,7 +37,6 @@
   
   if(isset($_GET["mapname"])) $mapname = FilterData($_GET["mapname"]);
   if(isset($_GET["steamid"])) $steamid = FilterData($_GET["steamid"]);
-  
   
   $imagesDir = 'bcg/';
   $images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
@@ -56,8 +56,10 @@
   if (empty(  $realname ) AND empty($playerName) ) $Parse = 1;
   } 
   
-
   if(!empty($steamid) AND $Parse == 1) {
+  
+  	$steam32 = ConvertToSteam32($steamid);
+	$uniqueID = crc32('gm_'.$steam32.'_gm');
   
     if (file_exists($File)) unlink( $File );
   
@@ -83,13 +85,14 @@ $realname = "'.$realname.'";
 $playerName = "'.$playerName.'";
 $cached = "'.time().'";
 $UserIP = "'.$UserIP.'";
+$uniqueID = "'.$uniqueID.'";
 ?>';
     
     //if ( isset($FileCache) ) 
 	file_put_contents($File,  $content);
 	
   }
-  
+
   //Add to DB
 
   if( isset($DB_INSERT) AND !empty($realname) ) {
@@ -116,10 +119,11 @@ $UserIP = "'.$UserIP.'";
   $numrows = $r[0];
 
   if($numrows<=0) {
-   $sth = $db->prepare("INSERT INTO `".OSSDB_PLAYERS."`(steamID, steam, avatar, avatar_medium, location, playerName, last_connection, connections, user_ip) VALUES(:steamid, :steam, :Avatar, :avatarMedium, :location, :realname, :last_connection, '1', :user_ip )");
+   $sth = $db->prepare("INSERT INTO `".OSSDB_PLAYERS."`(steamID, steam, uniqueID, avatar, avatar_medium, location, playerName, last_connection, connections, user_ip) VALUES(:steamid, :steam, :uniqueID, :Avatar, :avatarMedium, :location, :realname, :last_connection, '1', :user_ip )");
    
     $sth->bindValue(':steamid',          $steamid,                   PDO::PARAM_STR); 
 	$sth->bindValue(':steam',            ConvertToSteam32($steamid), PDO::PARAM_STR); 
+	$sth->bindValue(':uniqueID',         ($uniqueID),                PDO::PARAM_INT); 
 	$sth->bindValue(':Avatar',           $Avatar,                    PDO::PARAM_STR); 
 	$sth->bindValue(':avatarMedium',     $avatarMedium,              PDO::PARAM_STR); 
 	$sth->bindValue(':location',         $location,                  PDO::PARAM_STR); 
@@ -139,17 +143,19 @@ $UserIP = "'.$UserIP.'";
 	connections=connections+1, 
 	location = :location, 
 	steam= :steam,
+	uniqueID = :uniqueID,
 	user_ip = :user_ip
 	WHERE steamID = :steamID AND last_connection<=NOW() - INTERVAL ".$cfg["cache_time"]." MINUTE  ");
 	
-	$upd->bindValue(':Avatar',          $Avatar, PDO::PARAM_STR); 
+	$upd->bindValue(':Avatar',          $Avatar,       PDO::PARAM_STR); 
 	$upd->bindValue(':avatarMedium',    $avatarMedium, PDO::PARAM_STR); 
-	$upd->bindValue(':realname',        $realname, PDO::PARAM_STR); 
-	$upd->bindValue(':last_connection', date("Y-m-d H:i:s", time()), PDO::PARAM_STR); 
-	$upd->bindValue(':location',        $location, PDO::PARAM_STR); 
+	$upd->bindValue(':realname',        $realname,     PDO::PARAM_STR); 
+	$upd->bindValue(':last_connection', date("Y-m-d H:i:s", time()),      PDO::PARAM_STR); 
+	$upd->bindValue(':location',        $location,                        PDO::PARAM_STR); 
 	$upd->bindValue(':steam',           trim(ConvertToSteam32($steamid)), PDO::PARAM_STR); 
-    $upd->bindValue(':user_ip',         $UserIP, PDO::PARAM_STR); 
-	$upd->bindValue(':steamID',         $steamid, PDO::PARAM_STR);
+	$upd->bindValue(':uniqueID',        $uniqueID, PDO::PARAM_STR); 
+    $upd->bindValue(':user_ip',         $UserIP,   PDO::PARAM_STR); 
+	$upd->bindValue(':steamID',         $steamid,  PDO::PARAM_STR);
 
     $result = $upd->execute();
     

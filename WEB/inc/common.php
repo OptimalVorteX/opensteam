@@ -42,6 +42,11 @@ function FilterData($data) {
     return $data;
 }
 
+function PlayerNameSpecChar( $player = "" ) {
+  $player = str_replace(array("&amp;amp;gt;", "&amp;amp;lt;", "&amp;amp;quot;"), array("&gt;", "&lt;", "&quot;"), $player);
+  return $player;
+}
+
     function getMonthName($month,
 	$ljan = "JAN",
 	$lfeb = "FEB",

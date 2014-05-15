@@ -35,6 +35,10 @@
  $lang["Logout"]                 = "Logout";
  
  $lang["Edit"]                   = "Edit";
+ $lang["PointShop"]              = "PointShop";
+ $lang["Points"]                 = "Points";
+ $lang["Equipped"]               = "Equipped";
+ $lang["Items"]                  = "Items";
  
  $lang["Banned"]                 = "Banned";
  $lang["Expired"]                = "Expired";

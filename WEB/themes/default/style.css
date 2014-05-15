@@ -5811,3 +5811,4 @@ footer a { color: #D3D3D3; }
 .command_list { font-size:12px; }
 .com_selected    { color:#106E27 }
 .com_deselected { color:#D43F3A }
+.ps_equipped { border:1px solid #ccc; font-size:52px; }

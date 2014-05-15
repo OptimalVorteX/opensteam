@@ -48,18 +48,19 @@
 	 $PlayerInfo ["country"] = "";
 	}
 
-	$PlayerInfo["id"]      = $row["id"];
-	$PlayerInfo["steamID"] = $row["steamID"];
-	$PlayerInfo["steam"] = $row["steam"];
-	$PlayerInfo["location"] = $row["location"];
-	$PlayerInfo["playerName"] = htmlspecialchars_decode($row["playerName"]);
-	$PageTitle = htmlspecialchars_decode($row["playerName"]).' | OpenSteam';
-	$PlayerInfo["avatar"] = $row["avatar"];
-	$PlayerInfo["avatar_medium"] = $row["avatar_medium"];
+	$PlayerInfo["id"]            = $row["id"];
+	$PlayerInfo["steamID"]       = $row["steamID"];
+	$PlayerInfo["steam"]         = $row["steam"];
+	$PlayerInfo["uniqueID"]      = $row["uniqueID"];
+	$PlayerInfo["location"]      = $row["location"];
+	$PlayerInfo["playerName"]    = htmlspecialchars_decode(PlayerNameSpecChar($row["playerName"]));
+	$PageTitle = htmlspecialchars_decode(PlayerNameSpecChar($row["playerName"])).' | OpenSteam';
+	$PlayerInfo["avatar"]          = $row["avatar"];
+	$PlayerInfo["avatar_medium"]   = $row["avatar_medium"];
 	$PlayerInfo["last_connection"] = date( OSS_DATE_FORMAT, strtotime($row["last_connection"]) );
-	$PlayerInfo["connections"] = $row["connections"];
-	$PlayerInfo["rank"] = $row["rank"];
-	$PlayerInfo["user_ip"] = $row["user_ip"];
+	$PlayerInfo["connections"]     = $row["connections"];
+	$PlayerInfo["rank"]            = $row["rank"];
+	$PlayerInfo["user_ip"]         = $row["user_ip"];
 	
 	//Check ban
 	$sth = $db->prepare( "SELECT * FROM ".OSSDB_BANS." WHERE steam=:steam AND (expire>=NOW() OR expire = '0000-00-00 00:00:00' ) LIMIT 1" );
@@ -75,6 +76,20 @@
 	  $PlayerInfo["bantime"] = date( OSS_DATE_FORMAT, strtotime($row["bantime"]));
 	  $PlayerInfo["expire"]  = date( OSS_DATE_FORMAT, strtotime($row["expire"] ));
 	  $PlayerInfo["expire_date"]  = $row["expire"];
+	}
+	
+	//POINTSHOP ADDON
+	if($cfg["pointshop"] == 1 AND !empty($PlayerInfo["uniqueID"]) ) {
+	
+	 $sth = $db->prepare("SELECT ps.uniqueid, ps.points, ps.items
+	 FROM `".OSSDB_POINTSHOP."` as ps 
+	 WHERE ps.`items`!='' ".$sql." AND ps.uniqueid = '".$PlayerInfo["uniqueID"] ."'
+	 LIMIT 1");
+	 $result = $sth->execute(); 
+	 
+	 $row = $sth->fetch(PDO::FETCH_ASSOC);
+	 $PlayerInfo["points"] = $row["points"];
+	 $PlayerInfo["items"]  = json_decode($row["items"], true);
 	}
 
 ?>

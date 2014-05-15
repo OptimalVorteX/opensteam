@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `ph_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `steamID` varchar(30) NOT NULL,
   `steam` varchar(30) NOT NULL,
+  `uniqueID` int(11) unsigned NOT NULL,
   `avatar` varchar(255) NOT NULL,
   `avatar_medium` varchar(255) NOT NULL,
   `location` varchar(60) NOT NULL,
@@ -41,7 +42,8 @@ CREATE TABLE IF NOT EXISTS `ph_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `steam` (`steam`),
   KEY `steamID` (`steamID`),
-  KEY `last_seen` (`last_connection`)
+  KEY `last_seen` (`last_connection`),
+  KEY `uniqueID` (`uniqueID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

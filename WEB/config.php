@@ -27,6 +27,9 @@ $cfg["players_per_page"] = '30';
 //Show message info for banned users on loading screen
 $cfg["loading_ban_message"] = '1';
 
+//Pointshop support
+$cfg["pointshop"] = '1';
+
 //Remove inactive players. Default:(inactive time: 90 days)
 $cfg["remove_players"] = '90';
 

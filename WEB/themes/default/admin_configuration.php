@@ -47,6 +47,24 @@
             </td>
          </tr>
 		 <tr>
+            <td width="180"><strong><?=$lang["RemoveOldPlayers"]?>:</strong></td>
+            <td><input type="text" name="remove_players" value="<?=$cfg["remove_players"]?>" size="5" /> <?=$lang["days"]?>
+			<div><?=$lang["RemoveOldPlayersInfo"]?></div>
+			</td>
+         </tr>
+         <tr>
+            <td width="180"><strong><?=$lang["PointShop"]?>:</strong></td>
+            <td>
+               <select name="pointshop">
+                  <?php if($cfg["pointshop"]=='1') $s='selected="selected"'; else $s="";?>
+                  <option <?=$s?> value="1">Enable</option>
+                  <?php if($cfg["pointshop"]=='0') $s='selected="selected"'; else $s="";?>
+                  <option <?=$s?> value="0">Disable</option>
+               </select>
+			   <span><a target="_blank" href="http://facepunch.com/showthread.php?t=1228438">Pointshop support</a></span>
+            </td>
+         </tr>
+		 <tr>
             <td width="180"><strong><?=$lang["CacheSteamFiles"]?>:</strong></td>
             <td><input type="text" name="cache_time" value="<?=$cfg["cache_time"]?>" size="2" /> <?=$lang["min"]?>.</td>
          </tr>

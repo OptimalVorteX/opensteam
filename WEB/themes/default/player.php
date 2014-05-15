@@ -42,7 +42,59 @@
 	 
  
 </table>
-  
-
 <?php } ?>
 </div>
+
+<?php if(isset($PlayerInfo["items"]) AND !empty($PlayerInfo["playerName"])) { ?>
+<div class="well bs-component">
+  <h2><?=$lang["PointShop"]?></h2>
+
+<table class="table table-striped table-hover ">
+  <tr>
+     <td><strong><?=$lang["Points"]?></strong></td>
+	 <td><?=number_format($PlayerInfo["points"])?></td>
+  </tr>
+  <tr>
+     <td width="100"><strong><?=$lang["Equipped"]?></strong></td>
+	 <td>
+	 
+	<?php 
+	foreach ($PlayerInfo["items"] as $item=>$val ) {
+	    if( $val["Equipped"] == true ) {
+		
+		if(file_exists("img/pointshop/".$item.".png")) {
+		?><img title="<?=$item?>" src="<?=OSS_HOME?>img/pointshop/<?=$item?>.png" width="100" height="100" /><?php
+		} else {
+		?>
+		<span><?=$item?></span>
+		<?php
+		}
+		}
+	}
+	?>
+	 </td>
+  </tr>
+  
+  <tr>
+     <td width="100"><strong><?=$lang["Items"]?></strong></td>
+	 <td>
+	 
+	<?php 
+	foreach ($PlayerInfo["items"] as $item=>$val ) {
+	    if( $val["Equipped"] == false ) {
+		
+		if(file_exists("img/pointshop/".$item.".png")) {
+		?><img title="<?=$item?>" src="<?=OSS_HOME?>img/pointshop/<?=$item?>.png" width="100" height="100" /><?php
+		} else {
+		?>
+		<span><?=$item?></span>
+		<?php
+		}
+		}
+	}
+	?>
+	 </td>
+  </tr>
+</table>
+</div>
+<?php } ?>
