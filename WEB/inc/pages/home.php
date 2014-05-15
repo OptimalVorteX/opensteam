@@ -89,7 +89,7 @@
 	 $PlayersData[$c]["avatar_medium"]  = ($row["avatar_medium"]);
 	 if(empty($row["avatar_medium"])) $PlayersData[$c]["avatar_medium"] =  OSS_THEME_LINK."images/no-avatar.gif";
 	 $PlayersData[$c]["location"]  = ($row["location"]);
-	 $PlayersData[$c]["playerName"]  = htmlspecialchars_decode($row["playerName"]);
+	 $PlayersData[$c]["playerName"]  = htmlspecialchars_decode( PlayerNameSpecChar($row["playerName"]));
 	 $PlayersData[$c]["connections"]  = ($row["connections"]);
 	 $PlayersData[$c]["last_connection"]  = date(OSS_DATE_FORMAT, strtotime($row["last_connection"]) );
 	 $PlayersData[$c]["rank"]  = ($row["rank"]);
