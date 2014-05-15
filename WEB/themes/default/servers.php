@@ -4,8 +4,10 @@
 <table class="table table-striped table-hover ">
   <thead>
     <tr>
-	  <th>Server Name</th>
-      <th>IP:PORT</th>
+	  <th><?=$lang["ServerName"]?></th>
+      <th><?=$lang["IPAddress"]?></th>
+	  <th><?=$lang["ServerPlayers"]?></th>
+	  <th><?=$lang["ServerMap"]?></th>
     </tr>
   </thead>
   <tbody>
@@ -19,10 +21,16 @@
 	   <?=$server["server_name"]?>
 	  </a>
 	   </td>
-      <td>
+      <td width="260">
+	  <!--
 		<a class="text-danger" onclick="ToClipboard('<?=$server["server_ip"]?>:<?=$server["server_port"]?>')" href="javascript:;"><?=$server["server_ip"]?>:<?=$server["server_port"]?></a>
+		-->
+		<a class="text-danger" href="steam://connect/<?=$server["server_ip"]?>:<?=$server["server_port"]?>"><?=$server["server_ip"]?>:<?=$server["server_port"]?></a>
+		
 	  <?=OSS_EditServer($server["id"]) ?>
 	  </td>
+	  <td width="80"><?=$server["ServerInfo"]["Players"]?>/<?=$server["ServerInfo"]["MaxPlayers"]?></td>
+	  <td><?=$server["ServerInfo"]["Map"]?></td>
     </tr>
    <?php } ?>
   </tbody>
@@ -91,4 +99,4 @@
 
 <?php } ?>
 
-<div style="margin-top:280px;">&nbsp;</div>
+<div style="margin-top:380px;">&nbsp;</div>

@@ -1,4 +1,5 @@
 <?php
+if (!isset( $cfg["website"] ) ) {header('HTTP/1.1 404 Not Found'); die; } 
 
   if ( OSS_SuperAdmin() AND isset($_GET["id"]) AND (is_numeric($_GET["id"]) OR strstr( $_GET["id"], "STEAM_") ) ) {
     
